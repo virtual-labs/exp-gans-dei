@@ -12,7 +12,7 @@ Generative Adversarial Networks (GANs), proposed by Goodfellow et al. in 2014, a
 
 #### GAN Architecture
 
-A GAN consists of two neural networks trained simultaneously in a competitive framework:
+A GAN consists of two neural networks trained simultaneously in a competitive framework as shown in Fig. 1:
 
 - **The Generator Network** takes random noise vectors from a latent space as input and transforms them into synthetic images.
 - **The Discriminator Network** receives both real images from the training dataset and fake images produced by the generator, and its task is to classify each input as real or generated.
@@ -78,7 +78,7 @@ Once training is complete, the generator can map any point from the latent space
 #### Merits of Generative Adversarial Networks
 
 - **High-Quality Data Generation:**
-  GANs are capable of generating high-resolution and highly realistic images, videos, and other types of data. The quality of the generated data is often superior to that produced by other generative models.
+  GANs are capable of generating high-resolution and highly realistic images (as shown in Fig. 2), videos, and other types of data. The quality of the generated data is often superior to that produced by other generative models.
 
 - **Unsupervised Learning:**
   GANs can learn to generate data without requiring labelled training data. This is particularly useful in situations where labelled data is scarce or expensive to obtain.
