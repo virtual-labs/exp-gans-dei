@@ -41,7 +41,7 @@ During training, both networks are optimized together in an adversarial manner. 
 
 The GAN objective function is defined as:
 
-**min<sub>G</sub> max<sub>D</sub> V(D, G) = E<sub>x~p<sub>data</sub>(x)</sub>[log D(x)] + E<sub>z~p<sub>z</sub>(z)</sub>[log(1 - D(G(z)))]**
+min<sub>G</sub> max<sub>D</sub> V(D, G) = E<sub>x∼p<sub>data</sub>(x)</sub>[log D(x)] + E<sub>z∼p<sub>z</sub>(z)</sub>[log(1 - D(G(z)))]
 
 where:
 
