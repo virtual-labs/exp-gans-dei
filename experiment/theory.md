@@ -54,11 +54,6 @@ where:
 - *D(x; θ<sub>d</sub>)* : Discriminator network that outputs the probability that *x* is real
 - *θ<sub>d</sub>* : Parameters (weights) of the Discriminator
 - *D(x) ∈ [0,1]* : Probability that input *x* is from real data
-
----
-
-#### Meaning of Each Term
-
 - **E<sub>x~p<sub>data</sub>(x)</sub>[log D(x)]** : Encourages the discriminator to correctly classify real samples as real.
 - **E<sub>z~p<sub>z</sub>(z)</sub>[log(1 - D(G(z)))]** : Encourages the discriminator to correctly classify generated samples as fake, while the generator tries to minimize this term to fool the discriminator.
 

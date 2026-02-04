@@ -439,7 +439,6 @@ function showCompletionBanner() {
 function setupTrainingEvolution() {
 	const digitSelect = document.getElementById('evolutionDigitSelect');
 	const playBtn = document.getElementById('playEvolutionBtn');
-	const stopBtn = document.getElementById('stopEvolutionBtn');
 	const display = document.getElementById('evolutionDisplay');
 	
 	let animationInterval = null;
@@ -456,7 +455,6 @@ function setupTrainingEvolution() {
 		if (animationInterval) {
 			clearInterval(animationInterval);
 			animationInterval = null;
-			stopBtn.disabled = true;
 			playBtn.disabled = false;
 		}
 	});
@@ -466,12 +464,17 @@ function setupTrainingEvolution() {
 		const digit = digitSelect.value;
 		if (!digit) return;
 		
+		// Stop any existing animation
+		if (animationInterval) {
+			clearInterval(animationInterval);
+			animationInterval = null;
+		}
+		
 		playBtn.disabled = true;
-		stopBtn.disabled = false;
 		digitSelect.disabled = true;
 		
-		// Define epochs based on configuration
-		const epochs = state.currentEpoch === '25' ? [1, 5, 10, 15, 20, 25] : [1, 5, 10, 15, 20, 25, 30];
+		// Define epochs - always run from 0 to 25 for 30 epoch case
+		const epochs = state.currentEpoch === '25' ? [1, 5, 10, 15, 20, 25] : [0, 5, 10, 15, 20, 25];
 		let currentEpochIndex = 0;
 		
 		// Show first image immediately
@@ -481,27 +484,17 @@ function setupTrainingEvolution() {
 		// Animate through epochs
 		animationInterval = setInterval(() => {
 			if (currentEpochIndex >= epochs.length) {
-				// Loop back to start
-				currentEpochIndex = 0;
+				// Stop the animation when complete
+				clearInterval(animationInterval);
+				animationInterval = null;
+				playBtn.disabled = false;
+				digitSelect.disabled = false;
+				return;
 			}
 			
 			showEvolutionImage(digit, epochs[currentEpochIndex]);
 			currentEpochIndex++;
 		}, 1000); // Change image every 1 second
-	});
-	
-	// Stop evolution animation
-	stopBtn.addEventListener('click', () => {
-		if (animationInterval) {
-			clearInterval(animationInterval);
-			animationInterval = null;
-		}
-		
-		stopBtn.disabled = true;
-		playBtn.disabled = false;
-		digitSelect.disabled = false;
-		
-		display.innerHTML = '<p class="evolution-placeholder">Click "Play Evolution" to start the animation</p>';
 	});
 	
 	function showEvolutionImage(digit, epoch) {
