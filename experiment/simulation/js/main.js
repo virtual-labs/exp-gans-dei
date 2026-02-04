@@ -473,8 +473,8 @@ function setupTrainingEvolution() {
 		playBtn.disabled = true;
 		digitSelect.disabled = true;
 		
-		// Define epochs - always run from 0 to 25 for 30 epoch case
-		const epochs = state.currentEpoch === '25' ? [1, 5, 10, 15, 20, 25] : [0, 5, 10, 15, 20, 25];
+		// Define epochs - show progression at key checkpoints
+		const epochs = state.currentEpoch === '25' ? [1, 5, 10, 15, 20, 25] : [1, 5, 10, 15, 20, 25, 30];
 		let currentEpochIndex = 0;
 		
 		// Show first image immediately
