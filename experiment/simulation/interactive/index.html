@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GAN Simulator - Interactive Deep Learning</title>
+
+    <meta name="description"
+        content="Interactive GAN simulator for learning generative adversarial networks, mode collapse, latent space exploration, and adversarial training dynamics.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="stylesheet" href="css/simulations.css">
+</head>
+
+<body>
+    <!-- Tab Navigation -->
+    <nav class="tab-navigation">
+        <div class="logo">
+            <span>GAN</span> Simulator
+        </div>
+        <button class="tab-btn active" data-tab="sim1">1. Adversarial Game</button>
+        <button class="tab-btn" data-tab="sim2">2. Epoch Evolution</button>
+        <button class="tab-btn" data-tab="sim3">3. Mode Collapse</button>
+        <button class="tab-btn" data-tab="sim4">4. Latent Explorer</button>
+        <a href="../notebook/index.html" class="btn-back">
+            ← Back to Notebook
+        </a>
+    </nav>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+
+        <!-- ============================================ -->
+        <!-- SIMULATION 1: Generator vs Discriminator -->
+        <!-- ============================================ -->
+        <div id="sim1" class="tab-content active">
+            <div class="sim-layout">
+                <!-- Sidebar -->
+                <aside class="sim-sidebar glass-panel">
+                    <h2>Adversarial Game</h2>
+                    <p>Watch a Generator and Discriminator compete in a 2D toy world.</p>
+
+                    <h3>Dataset</h3>
+                    <div class="control-group">
+                        <select id="sim1Dataset">
+                            <option value="gaussian">Gaussian Blob</option>
+                            <option value="circle">Circle</option>
+                            <option value="twomoons">Two Moons</option>
+                        </select>
+                    </div>
+
+                    <h3>Generator</h3>
+                    <div class="control-group">
+                        <label>Learning Rate</label>
+                        <div class="control-row">
+                            <input type="range" id="sim1LrG" min="0.0005" max="0.05" step="0.0005" value="0.005">
+                            <span class="value" id="sim1LrGVal">0.0050</span>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label>Steps per Tick</label>
+                        <div class="control-row">
+                            <input type="range" id="sim1GSteps" min="1" max="10" step="1" value="2">
+                            <span class="value" id="sim1GStepsVal">2</span>
+                        </div>
+                    </div>
+
+                    <h3>Discriminator</h3>
+                    <div class="control-group">
+                        <label>Learning Rate</label>
+                        <div class="control-row">
+                            <input type="range" id="sim1LrD" min="0.0005" max="0.05" step="0.0005" value="0.005">
+                            <span class="value" id="sim1LrDVal">0.0050</span>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label>Steps per Tick</label>
+                        <div class="control-row">
+                            <input type="range" id="sim1DSteps" min="1" max="10" step="1" value="2">
+                            <span class="value" id="sim1DStepsVal">2</span>
+                        </div>
+                    </div>
+
+                    <div class="btn-group" style="margin-top: 0.75rem;">
+                        <button class="btn btn-primary" id="sim1Start">▶ Start</button>
+                        <button class="btn" id="sim1Step">Step</button>
+                        <button class="btn btn-danger" id="sim1Reset">Reset</button>
+                    </div>
+                </aside>
+
+                <!-- Main Area -->
+                <div class="sim-main">
+                    <!-- Status -->
+                    <div class="status-bar">
+                        <span class="status-dot" id="sim1StatusDot"></span>
+                        <span id="sim1StatusText">Ready</span>
+                        <span style="margin-left: auto; font-family: var(--mono);" id="sim1StepCount">Step: 0</span>
+                    </div>
+
+                    <!-- Side-by-side: Canvas + Chart -->
+                    <div class="sim1-workspace">
+                        <div class="canvas-container glass-panel">
+                            <canvas id="sim1Canvas"></canvas>
+                        </div>
+                        <div class="chart-side">
+                            <div class="chart-box glass-panel">
+                                <h4>Live Loss Curves</h4>
+                                <div class="chart-wrap">
+                                    <canvas id="sim1LossChart"></canvas>
+                                </div>
+                            </div>
+                            <div class="observe-box glass-panel">
+                                <h4>💡 What to Observe</h4>
+                                <ul>
+                                    <li><strong>Heatmap</strong> = discriminator confidence</li>
+                                    <li><strong>Red dots</strong> should move toward <strong>blue dots</strong></li>
+                                    <li>Increase G steps → faster convergence</li>
+                                    <li>Switch datasets for different challenges</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- SIMULATION 2: Epoch Evolution -->
+        <!-- ============================================ -->
+        <div id="sim2" class="tab-content">
+            <div class="sim-layout">
+                <!-- Sidebar -->
+                <aside class="sim-sidebar glass-panel">
+                    <h2>Epoch Evolution</h2>
+                    <p>See how the GAN improves over training epochs. Compare real MNIST with generated images.</p>
+
+                    <h3>Configuration</h3>
+                    <div class="control-group">
+                        <label>Training Config</label>
+                        <select id="sim2Config">
+                            <option value="25" selected>25 Epochs per Digit</option>
+                            <option value="30">30 Epochs per Digit</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label>Select Digit</label>
+                        <select id="sim2Digit">
+                            <option value="0">Digit 0</option>
+                            <option value="1">Digit 1</option>
+                            <option value="2">Digit 2</option>
+                            <option value="3">Digit 3</option>
+                            <option value="4">Digit 4</option>
+                            <option value="5">Digit 5</option>
+                            <option value="6">Digit 6</option>
+                            <option value="7">Digit 7</option>
+                            <option value="8">Digit 8</option>
+                            <option value="9">Digit 9</option>
+                        </select>
+                    </div>
+
+                    <h3>Epoch</h3>
+                    <div class="control-group">
+                        <div class="control-row">
+                            <input type="range" id="sim2EpochSlider" min="1" max="25" value="1" step="1">
+                            <span class="value" id="sim2EpochVal">Epoch 1/25</span>
+                        </div>
+                    </div>
+
+                    <div class="btn-group" style="margin-top: 0.75rem;">
+                        <button class="btn btn-primary" id="sim2AutoPlay">▶ Auto Play</button>
+                    </div>
+
+                    <div style="margin-top: 1rem;">
+                        <h4 style="font-size: 0.78rem; margin-bottom: 0.3rem;">💡 Key Insights</h4>
+                        <ul style="font-size: 0.72rem; color: var(--text-muted); padding-left: 1rem; line-height: 1.6;">
+                            <li>Early epochs produce noise</li>
+                            <li>Loss ≠ image quality</li>
+                            <li>D confusion dropping = good sign</li>
+                        </ul>
+                    </div>
+                </aside>
+
+                <!-- Main Area -->
+                <div class="sim-main">
+                    <!-- Split Screen: Real vs Generated -->
+                    <div class="split-screen">
+                        <div class="split-panel glass-panel">
+                            <h4>🔵 Real Samples</h4>
+                            <div id="sim2RealImages"></div>
+                        </div>
+                        <div class="split-panel glass-panel">
+                            <h4>🔴 Generated Samples</h4>
+                            <div id="sim2FakeImages"></div>
+                        </div>
+                    </div>
+
+                    <!-- Quality Gauges -->
+                    <div class="gauges-row">
+                        <div class="gauge-box glass-panel">
+                            <h5>Diversity</h5>
+                            <canvas id="sim2GaugeDiversity" width="80" height="80"></canvas>
+                            <div class="gauge-value" id="sim2GaugeDiversityVal">50%</div>
+                        </div>
+                        <div class="gauge-box glass-panel">
+                            <h5>Sharpness</h5>
+                            <canvas id="sim2GaugeSharpness" width="80" height="80"></canvas>
+                            <div class="gauge-value" id="sim2GaugeSharpnessVal">50%</div>
+                        </div>
+                        <div class="gauge-box glass-panel">
+                            <h5>D Accuracy</h5>
+                            <canvas id="sim2GaugeDAccuracy" width="80" height="80"></canvas>
+                            <div class="gauge-value" id="sim2GaugeDAccuracyVal">50%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- SIMULATION 3: Mode Collapse Playground -->
+        <!-- ============================================ -->
+        <div id="sim3" class="tab-content">
+            <div class="sim-layout">
+                <!-- Sidebar -->
+                <aside class="sim-sidebar glass-panel">
+                    <h2>Mode Collapse</h2>
+                    <p>Watch the Generator collapse to a subset of modes. Real data has 6 clusters.</p>
+
+                    <h3>Generator</h3>
+                    <div class="control-group">
+                        <label>Learning Rate</label>
+                        <div class="control-row">
+                            <input type="range" id="sim3LrG" min="0.001" max="0.05" step="0.001" value="0.005">
+                            <span class="value" id="sim3LrGVal">0.0050</span>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label>Noise Dimension</label>
+                        <div class="control-row">
+                            <input type="range" id="sim3NoiseDim" min="2" max="32" step="1" value="8">
+                            <span class="value" id="sim3NoiseDimVal">8</span>
+                        </div>
+                    </div>
+
+                    <h3>Techniques</h3>
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="sim3BN">
+                        <span class="toggle-label">Batch Normalization</span>
+                    </div>
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="sim3WGAN">
+                        <span class="toggle-label">Wasserstein GAN</span>
+                    </div>
+
+                    <div class="btn-group" style="margin-top: 0.75rem;">
+                        <button class="btn btn-primary" id="sim3Start">▶ Start</button>
+                        <button class="btn btn-danger" id="sim3Reset">Reset</button>
+                    </div>
+
+                    <div style="margin-top: 1rem;">
+                        <h4 style="font-size: 0.78rem; margin-bottom: 0.3rem;">💡 What You'll Learn</h4>
+                        <ul style="font-size: 0.72rem; color: var(--text-muted); padding-left: 1rem; line-height: 1.6;">
+                            <li>GAN may only cover one mode</li>
+                            <li>High quality ≠ diversity</li>
+                            <li>Higher noise dim helps</li>
+                            <li>BatchNorm/WGAN reduce collapse</li>
+                        </ul>
+                    </div>
+                </aside>
+
+                <!-- Main Area -->
+                <div class="sim-main">
+                    <!-- Status -->
+                    <div class="status-bar">
+                        <span class="status-dot"></span>
+                        <span>Mode Collapse Visualization</span>
+                        <span style="margin-left: auto; font-family: var(--mono);" id="sim3StepCount">Step: 0</span>
+                    </div>
+
+                    <!-- Side-by-side: Canvas + Diversity -->
+                    <div class="sim3-workspace">
+                        <div class="canvas-container glass-panel">
+                            <canvas id="sim3Canvas"></canvas>
+                        </div>
+                        <div class="sim3-right">
+                            <div class="diversity-panel glass-panel">
+                                <h4 style="font-size: 0.82rem; margin-bottom: 0.35rem;">Diversity Metrics</h4>
+                                <div class="diversity-bar">
+                                    <div class="diversity-fill" id="sim3DiversityFill" style="width: 100%"></div>
+                                </div>
+                                <div class="mode-counter">
+                                    <div class="mode-stat">
+                                        <div class="num" id="sim3ModeCount">6</div>
+                                        <div class="label">Covered Modes</div>
+                                    </div>
+                                    <div class="mode-stat">
+                                        <div class="num" id="sim3TotalModes">6</div>
+                                        <div class="label">Total Modes</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="observe-box glass-panel">
+                                <h4>💡 Legend</h4>
+                                <ul>
+                                    <li><strong style="color:#3b82f6">Blue dots</strong> = Real data clusters</li>
+                                    <li><strong style="color:#ef4444">Red dots</strong> = Generator output</li>
+                                    <li>Watch red dots collapse to fewer clusters</li>
+                                    <li>Toggle BatchNorm/WGAN and compare</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- SIMULATION 4: Latent Space Explorer -->
+        <!-- ============================================ -->
+        <div id="sim4" class="tab-content">
+            <div class="sim-layout">
+                <!-- Sidebar -->
+                <aside class="sim-sidebar glass-panel">
+                    <h2>Latent Explorer</h2>
+                    <p>Explore the continuous latent manifold. Move sliders to morph between digits smoothly.</p>
+
+                    <h3>Latent Variables</h3>
+                    <div class="latent-controls">
+                        <div class="latent-slider-group">
+                            <label>z₁</label>
+                            <input type="range" id="sim4Z1" min="-1" max="1" step="0.01" value="0">
+                            <span class="val" id="sim4Z1Val">0.00</span>
+                        </div>
+                        <div class="latent-slider-group">
+                            <label>z₂</label>
+                            <input type="range" id="sim4Z2" min="-1" max="1" step="0.01" value="0">
+                            <span class="val" id="sim4Z2Val">0.00</span>
+                        </div>
+                        <div class="latent-slider-group">
+                            <label>z₃</label>
+                            <input type="range" id="sim4Z3" min="-1" max="1" step="0.01" value="0">
+                            <span class="val" id="sim4Z3Val">0.00</span>
+                        </div>
+                    </div>
+
+                    <div class="btn-group" style="margin-top: 0.75rem;">
+                        <button class="btn btn-primary" id="sim4Random">🎲 Random</button>
+                        <button class="btn" id="sim4Interp">↔ Interpolate</button>
+                    </div>
+
+                    <div
+                        style="margin-top: 0.75rem; padding: 0.6rem; background: var(--accent-bg); border-radius: 6px;">
+                        <p id="sim4DigitLabel"
+                            style="font-size: 0.82rem; font-weight: 600; color: var(--accent); text-align: center;">
+                            Digit 4</p>
+                    </div>
+
+                    <div style="margin-top: 1rem;">
+                        <h4 style="font-size: 0.78rem; margin-bottom: 0.3rem;">💡 Key Insights</h4>
+                        <ul style="font-size: 0.72rem; color: var(--text-muted); padding-left: 1rem; line-height: 1.6;">
+                            <li>Generator learns <strong>continuous manifolds</strong></li>
+                            <li>Small z changes → smooth transitions</li>
+                            <li>z₁ = digit, z₂ = morph, z₃ = variation</li>
+                        </ul>
+                    </div>
+                </aside>
+
+                <!-- Main Area -->
+                <div class="sim-main">
+                    <!-- Side-by-side: Generated output + Interpolation -->
+                    <div class="sim4-workspace">
+                        <div class="generated-display glass-panel">
+                            <canvas id="sim4Canvas"></canvas>
+                        </div>
+                        <div class="glass-panel" style="padding: 0.75rem; display: flex; flex-direction: column;">
+                            <h4 style="font-size: 0.82rem; margin-bottom: 0.35rem;">Interpolation Path</h4>
+                            <p style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+                                Click "Interpolate" to see a smooth transition between two random latent points.
+                            </p>
+                            <div class="interpolation-strip" id="sim4InterpStrip" style="flex: 1; align-items: center;">
+                                <p style="font-size: 0.72rem; color: var(--text-muted);">Press ↔ Interpolate to generate
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/tabs.js"></script>
+    <script src="js/sim1-adversarial.js"></script>
+    <script src="js/sim2-epoch-evolution.js"></script>
+    <script src="js/sim3-mode-collapse.js"></script>
+    <script src="js/sim4-latent-explorer.js"></script>
+</body>
+
+</html>
