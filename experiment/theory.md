@@ -19,12 +19,6 @@ A GAN consists of two neural networks trained simultaneously in a competitive fr
 
 The training process of a GAN can be intuitively understood as a competition between a counterfeit artist and an expert evaluator. Initially, the generator produces poor-quality images, which the discriminator easily identifies as fake. Through continuous feedback from the discriminator, the generator gradually improves its ability to create more realistic images. At the same time, the discriminator becomes more skilled at detecting subtle differences between real and generated samples. Over successive training iterations, both networks improve, eventually reaching a point where the discriminator finds it difficult to distinguish between real and synthetic images.
 
-![Fig. 2. MNIST vs DCGAN](images/mnist_dcgan_comparison.png)
-
-**Fig. 2.** Side-by-side illustration of (from left-to-right) the MNIST dataset, generations from a baseline GAN, and generations from our DCGAN.
-
-*(Source: Radford, A., Metz, L., & Chintala, S., "Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks," arXiv:1511.06434, 2015.)*
-
 ---
 
 #### Adversarial Learning
@@ -41,39 +35,39 @@ During training, both networks are optimized together in an adversarial manner. 
 
 The GAN objective function is defined as:
 
-min<sub>G</sub> max<sub>D</sub> V(D, G) = E<sub>x∼p<sub>data</sub>(x)</sub>[log D(x)] + E<sub>z∼p<sub>z</sub>(z)</sub>[log(1 - D(G(z)))]
+$$\min_{G} \max_{D} \; V(D, G) = \mathbb{E}_{x \sim p_{\text{data}}(x)}\left[\log D(x)\right] + \mathbb{E}_{z \sim p_z(z)}\left[\log\left(1 - D(G(z))\right)\right]$$
 
 where:
 
-- *x* : A real data sample drawn from the training dataset
-- *p<sub>data</sub>(x)* : True data distribution
-- *z* : Random noise vector sampled from a prior distribution
-- *p<sub>z</sub>(z)* : Prior noise distribution (usually Gaussian or uniform)
-- *G(z; θ<sub>g</sub>)* : Generator network that maps noise *z* to a synthetic data sample
-- *θ<sub>g</sub>* : Parameters (weights) of the Generator
-- *D(x; θ<sub>d</sub>)* : Discriminator network that outputs the probability that *x* is real
-- *θ<sub>d</sub>* : Parameters (weights) of the Discriminator
-- *D(x) ∈ [0,1]* : Probability that input *x* is from real data
-- **E<sub>x~p<sub>data</sub>(x)</sub>[log D(x)]** : Encourages the discriminator to correctly classify real samples as real.
-- **E<sub>z~p<sub>z</sub>(z)</sub>[log(1 - D(G(z)))]** : Encourages the discriminator to correctly classify generated samples as fake, while the generator tries to minimize this term to fool the discriminator.
+- $x$ : A real data sample drawn from the training dataset
+- $p_{\text{data}}(x)$ : True data distribution
+- $z$ : Random noise vector sampled from a prior distribution
+- $p_z(z)$ : Prior noise distribution (uniform or Gaussian)
+- $G(z;\, \theta_g)$ : Generator network that maps noise $z$ to a synthetic data sample
+- $\theta_g$ : Parameters (weights) of the Generator
+- $D(x;\, \theta_d)$ : Discriminator network that outputs the probability that $x$ is real
+- $\theta_d$ : Parameters (weights) of the Discriminator
+- $D(x) \in [0, 1]$ : Probability that input $x$ is from real data
+- $\mathbb{E}_{x \sim p_{\text{data}}(x)}\!\left[\log D(x)\right]$ : Encourages the discriminator to correctly classify real samples as real
+- $\mathbb{E}_{z \sim p_z(z)}\!\left[\log\!\left(1 - D(G(z))\right)\right]$ : Encourages the discriminator to correctly classify generated samples as fake, while the generator tries to minimise this term to fool the discriminator
 
 ---
 
 #### Interpretation
 
-- The **Discriminator** tries to maximize this value function by improving its ability to distinguish real from fake data.
-- The **Generator** tries to minimize the function by generating samples that the discriminator classifies as real.
+- The **Discriminator** tries to **maximise** $V(D, G)$ by improving its ability to distinguish real from fake data.
+- The **Generator** tries to **minimise** $V(D, G)$ by generating samples that the discriminator classifies as real.
 
-Unlike traditional deep learning models that optimize a fixed loss function, GAN training involves a dynamic optimization process. Each update to the generator affects the discriminator's learning objective and vice versa. Instead of converging to a single minimum, the training seeks an equilibrium between the two competing networks. This adversarial nature makes GANs powerful but also challenging to train, often requiring careful selection of network architectures, hyper-parameters, and training strategies.
+Unlike traditional deep learning models that optimise a fixed loss function, GAN training involves a dynamic optimisation process. Each update to the generator affects the discriminator's learning objective and vice versa. Instead of converging to a single minimum, the training seeks an equilibrium between the two competing networks — this is formally a **Nash equilibrium** of the two-player minimax game. This adversarial nature makes GANs powerful but also challenging to train, often requiring careful selection of network architectures, hyper-parameters, and training strategies.
 
-Once training is complete, the generator can map any point from the latent space to a realistic output image. However, unlike VAEs, GANs do not explicitly enforce continuity or structure in the latent space, which can make interpolation and control more complex.
+Once training is complete, the generator $G$ can map any point $z$ from the latent space to a realistic output image. However, unlike VAEs, GANs do not explicitly enforce continuity or structure in the latent space, which can make interpolation and control more complex.
 
 ---
 
 #### Merits of Generative Adversarial Networks
 
 - **High-Quality Data Generation:**
-  GANs are capable of generating high-resolution and highly realistic images (as shown in Fig. 2), videos, and other types of data. The quality of the generated data is often superior to that produced by other generative models.
+  GANs are capable of generating high-resolution and highly realistic images, videos, and other types of data. The quality of the generated data is often superior to that produced by other generative models.
 
 - **Unsupervised Learning:**
   GANs can learn to generate data without requiring labelled training data. This is particularly useful in situations where labelled data is scarce or expensive to obtain.
@@ -89,7 +83,7 @@ Once training is complete, the generator can map any point from the latent space
   Training GANs is notoriously difficult and unstable. The process often suffers from issues such as mode collapse, where the generator produces a limited variety of outputs, and vanishing gradients, where the discriminator becomes too strong, hindering the generator's learning.
 
 - **Mode Collapse:**
-  Mode collapse is a common problem in GANs where the generator produces a narrow range of outputs, failing to capture the diversity of the data distribution. This can lead to poor generalization and limited applicability.
+  Mode collapse is a common problem in GANs where the generator produces a narrow range of outputs, failing to capture the diversity of the data distribution. This can lead to poor generalisation and limited applicability.
 
 - **Susceptibility to Adversarial Attacks:**
   GANs, like other neural networks, can be vulnerable to adversarial attacks, where small perturbations to the input data can significantly impact the output, potentially leading to misleading or harmful results.

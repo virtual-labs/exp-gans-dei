@@ -2,7 +2,7 @@
   "version": 2.0,
   "questions": [
     {
-      "question": "What are the two main components of a GAN?",
+      "question": "1. What are the two main components of a GAN?",
       "answers": {
         "a": "Generator and encoder",
         "b": "Discriminator and encoder",
@@ -19,7 +19,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "How does the discriminator component in a GAN learn to distinguish between real and generated samples?",
+      "question": "2. How does the discriminator component in a GAN learn to distinguish between real and generated samples?",
       "answers": {
         "a": "By minimizing the loss function of the generator",
         "b": "By maximizing the loss function of the generator",
@@ -36,7 +36,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "Which loss function is commonly used in GANs?",
+      "question": "3. Which loss function is commonly used in GANs?",
       "answers": {
         "a": "Cross-entropy loss",
         "b": "Mean squared error loss",
@@ -53,7 +53,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "What is the purpose of the latent space in a GAN?",
+      "question": "4. What is the purpose of the latent space in a GAN?",
       "answers": {
         "a": "To represent the high-dimensional space of real samples",
         "b": "To control the diversity and characteristics of generated samples",
@@ -70,7 +70,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "How does the training process of a GAN typically work?",
+      "question": "5. How does the training process of a GAN typically work?",
       "answers": {
         "a": "The generator and discriminator are trained alternately",
         "b": "The generator and discriminator are trained simultaneously",
@@ -87,7 +87,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "Which approach is used to stabilize GAN training by controlling the learning rate of the Generator and Discriminator?",
+      "question": "6. Which approach is used to stabilize GAN training by controlling the learning rate of the Generator and Discriminator?",
       "answers": {
         "a": "Learning rate decay",
         "b": "Learning rate annealing",
@@ -104,7 +104,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "In GANs, what happens when the discriminator becomes unable to distinguish real from fake samples?",
+      "question": "7. In GANs, what happens when the discriminator becomes unable to distinguish real from fake samples?",
       "answers": {
         "a": "Training stops",
         "b": "Generator updates its weights",
@@ -121,7 +121,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "What is the purpose of the adversarial loss in GANs?",
+      "question": "8. What is the purpose of the adversarial loss in GANs?",
       "answers": {
         "a": "To encourage the generator to produce samples that deceive the discriminator",
         "b": "To control the learning rate during training",
@@ -138,7 +138,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "In which stage of GAN training does mode collapse occur?",
+      "question": "9. In which stage of GAN training does mode collapse occur?",
       "answers": {
         "a": "Early stage",
         "b": "Middle stage",
@@ -155,7 +155,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "Which technique can be used to address the problem of mode collapse in GANs?",
+      "question": "10. Which technique can be used to address the problem of mode collapse in GANs?",
       "answers": {
         "a": "Gradient penalty",
         "b": "Batch normalization",

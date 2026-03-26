@@ -57,6 +57,40 @@
                         </select>
                     </div>
 
+                    <!-- Dataset description panel — updated dynamically by sim1-adversarial.js -->
+                    <div id="sim1DatasetInfo" style="
+                        margin-top: 0.5rem;
+                        padding: 0.55rem 0.7rem;
+                        background: var(--accent-bg, rgba(99,102,241,0.07));
+                        border-left: 3px solid var(--accent, #6366f1);
+                        border-radius: 6px;
+                        font-size: 0.72rem;
+                        line-height: 1.6;
+                        color: var(--text-secondary, #4b5563);
+                    ">
+                        <strong>Gaussian Blob</strong><br>
+                        A single cluster centred at the origin, drawn from a 2-D isotropic Gaussian:<br>
+                        <code style="font-size:0.68rem;">p<sub>data</sub>(x) = 𝒩(0, 0.25·I)</code><br>
+                        i.e. each coordinate ~ 𝒩(0, σ²) with σ = 0.5.
+                    </div>
+
+                    <h3 style="margin-top:1rem;">Latent Variable</h3>
+                    <div style="
+                        padding: 0.55rem 0.7rem;
+                        background: rgba(239,68,68,0.07);
+                        border-left: 3px solid #ef4444;
+                        border-radius: 6px;
+                        font-size: 0.72rem;
+                        line-height: 1.6;
+                        color: var(--text-secondary, #4b5563);
+                    ">
+                        The Generator input noise vector is sampled from a
+                        <strong>Uniform distribution</strong> (not Gaussian):<br>
+                        <code style="font-size:0.68rem;">z ~ Uniform(−1, 1)<sup>8</sup></code><br>
+                        i.e. each of the 8 dimensions is drawn independently and uniformly
+                        from the interval [−1, 1].
+                    </div>
+
                     <h3>Generator</h3>
                     <div class="control-group">
                         <label>Learning Rate</label>
@@ -243,11 +277,25 @@
                         </div>
                     </div>
                     <div class="control-group">
-                        <label>Noise Dimension</label>
+                        <label>Noise Dimension <span style="font-size:0.68rem;color:var(--text-muted);">(dim of z)</span></label>
                         <div class="control-row">
                             <input type="range" id="sim3NoiseDim" min="2" max="32" step="1" value="8">
                             <span class="value" id="sim3NoiseDimVal">8</span>
                         </div>
+                    </div>
+                    <div style="
+                        margin-top:0.4rem;
+                        padding: 0.5rem 0.65rem;
+                        background: rgba(239,68,68,0.07);
+                        border-left: 3px solid #ef4444;
+                        border-radius: 6px;
+                        font-size: 0.7rem;
+                        line-height: 1.6;
+                        color: var(--text-secondary, #4b5563);
+                    ">
+                        Latent input: <code>z ~ Uniform(−1, 1)<sup>d</sup></code><br>
+                        where <em>d</em> = Noise Dimension above.
+                        Each dimension is sampled independently and uniformly.
                     </div>
 
                     <h3>Techniques</h3>
@@ -333,6 +381,20 @@
                     <p>Explore the continuous latent manifold. Move sliders to morph between digits smoothly.</p>
 
                     <h3>Latent Variables</h3>
+                    <div style="
+                        margin-bottom: 0.6rem;
+                        padding: 0.5rem 0.65rem;
+                        background: rgba(239,68,68,0.07);
+                        border-left: 3px solid #ef4444;
+                        border-radius: 6px;
+                        font-size: 0.7rem;
+                        line-height: 1.6;
+                        color: var(--text-secondary, #4b5563);
+                    ">
+                        Each latent dimension z<sub>i</sub> is sampled from<br>
+                        <code>z ~ Uniform(−1, 1)</code> — <strong>not</strong> Gaussian.<br>
+                        The sliders let you manually set z₁, z₂, z₃ within [−1, 1].
+                    </div>
                     <div class="latent-controls">
                         <div class="latent-slider-group">
                             <label>z₁</label>

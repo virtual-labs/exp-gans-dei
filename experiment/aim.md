@@ -1,3 +1,3 @@
 ### Aim
 
-To study Generative Adversarial Networks (GANs) by implementing a Deep Convolutional GAN (DCGAN) on the MNIST dataset, introducing adversarial training for image generation, and training it for a few epochs to produce digit-like samples, while monitoring progress through epoch-wise “real vs. generated” image panels and a simple quality indicator.
+To study and understand Generative Adversarial Networks (GANs) by implementing a Deep Convolutional GAN (DCGAN) on the MNIST dataset, performing step-by-step adversarial training for image generation, and analyzing the effects of hyperparameter tuning on the Generator and Discriminator, while visualizing training progress, quality improvements in generated outputs, mode collapse, and the continuous latent manifold through interactive simulations and epoch-wise comparisons.

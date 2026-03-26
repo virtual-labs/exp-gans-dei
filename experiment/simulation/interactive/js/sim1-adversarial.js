@@ -263,10 +263,43 @@
         gStepsSlider.oninput = () => gStepsVal.textContent = gStepsSlider.value;
         dStepsSlider.oninput = () => dStepsVal.textContent = dStepsSlider.value;
 
+        // Dataset description panel — content per selection
+        const datasetDescriptions = {
+            gaussian: `
+                <strong>Gaussian Blob</strong><br>
+                A single cluster centred at the origin, sampled from a 2-D isotropic Gaussian:<br>
+                <code style="font-size:0.68rem;">p<sub>data</sub>(x) = 𝒩(0, 0.25·I)</code><br>
+                Each coordinate is drawn as x<sub>i</sub> ~ 𝒩(0, σ²) with σ = 0.5.
+                The network must learn a unimodal, elliptical real distribution.
+            `,
+            circle: `
+                <strong>Circle</strong><br>
+                Points are placed on a noisy unit circle using polar coordinates:<br>
+                <code style="font-size:0.68rem;">θ ~ Uniform(0, 2π),  r = 1 + ε,  ε ~ 𝒩(0, 0.01)</code><br>
+                so x = (r·cos θ, r·sin θ). The target is an annulus of radius ≈ 1
+                with small radial Gaussian noise (σ<sub>r</sub> ≈ 0.1).
+            `,
+            twomoons: `
+                <strong>Two Moons</strong><br>
+                Two interleaved half-circles with additive Gaussian noise (σ ≈ 0.075):<br>
+                <code style="font-size:0.68rem;">Upper moon: (cos θ, sin θ) + ε,  θ ~ Uniform(0, π)</code><br>
+                <code style="font-size:0.68rem;">Lower moon: (1−cos θ, 0.5−sin θ) + ε</code><br>
+                A non-convex, multi-modal distribution that challenges GAN convergence.
+            `
+        };
+
+        const datasetInfoEl = document.getElementById('sim1DatasetInfo');
+        function updateDatasetInfo() {
+            const ds = datasetSelect.value;
+            datasetInfoEl.innerHTML = datasetDescriptions[ds] || '';
+        }
+
+        datasetSelect.addEventListener('change', () => { updateDatasetInfo(); reset(); });
+        updateDatasetInfo(); // set on load
+
         btnStart.addEventListener('click', toggleRun);
         btnStep.addEventListener('click', stepOnce);
         btnReset.addEventListener('click', reset);
-        datasetSelect.addEventListener('change', reset);
 
         // Init loss chart
         const chartCanvas = document.getElementById('sim1LossChart');

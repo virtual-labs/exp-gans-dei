@@ -2,7 +2,7 @@
   "version": 2.0,
   "questions": [
     {
-      "question": "What is the primary application of Deep Convolutional GAN (DCGAN)?",
+      "question": "1. What is the primary application of Deep Convolutional GAN (DCGAN)?",
       "answers": {
         "a": "Image-to-image translation",
         "b": "Style transfer",
@@ -19,7 +19,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "Why is adversarial training used in GANs?",
+      "question": "2. Why is adversarial training used in GANs?",
       "answers": {
         "a": "To train both networks independently",
         "b": "To create competition between Generator and Discriminator",
@@ -36,7 +36,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "What is the purpose of noise input in the generator component of a GAN?",
+      "question": "3. What is the purpose of noise input in the generator component of a GAN?",
       "answers": {
         "a": "To randomize the generation process and introduce variations",
         "b": "To control the learning rate during training",
@@ -53,7 +53,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "What is the role of the discriminator in a GAN during the training process?",
+      "question": "4. What is the role of the discriminator in a GAN during the training process?",
       "answers": {
         "a": "To provide feedback to the generator and help it improve",
         "b": "To generate synthetic samples",
@@ -70,7 +70,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "What does the term \"adversarial\" in GANs refer to?",
+      "question": "5. What does the term \"adversarial\" in GANs refer to?",
       "answers": {
         "a": "The competitive process between two sub-models",
         "b": "The generation of new data",
@@ -87,7 +87,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "What type of neural network layers are commonly used in DCGAN?",
+      "question": "6. What type of neural network layers are commonly used in DCGAN?",
       "answers": {
         "a": "Recurrent layers",
         "b": "Fully connected layers",
@@ -104,7 +104,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "Which optimization algorithm is commonly used to train GANs?",
+      "question": "7. Which optimization algorithm is commonly used to train GANs?",
       "answers": {
         "a": "Gradient Descent",
         "b": "Adam",
@@ -121,7 +121,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "Why are convolutional layers used in DCGAN instead of fully connected layers?",
+      "question": "8. Why are convolutional layers used in DCGAN instead of fully connected layers?",
       "answers": {
         "a": "They require fewer parameters and capture spatial features",
         "b": "They guarantee perfect image generation",
@@ -138,7 +138,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "What does the \"Real vs Generated\" panel help in understanding?",
+      "question": "9. What does the \"Real vs Generated\" panel help in understanding?",
       "answers": {
         "a": "Numerical accuracy of the model",
         "b": "Training speed of the optimizer",
@@ -155,7 +155,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "What is the format and nature of images in the MNIST dataset used for GAN training?",
+      "question": "10. What is the format and nature of images in the MNIST dataset used for GAN training?",
       "answers": {
         "a": "RGB images of size 224×224",
         "b": "Grayscale images of handwritten digits",
