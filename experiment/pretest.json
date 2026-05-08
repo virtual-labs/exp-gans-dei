@@ -45,7 +45,7 @@
       },
       "explanations": {
         "a": "Correct because noise allows the generator to produce diverse outputs.",
-        "b": "Incorrect because learning rate is a hyper-parameter, not controlled by input noise.",
+        "b": "Incorrect because learning rate is a hyperparameter, not controlled by input noise.",
         "c": "Incorrect because weights are updated via backpropagation, not noise.",
         "d": "Incorrect because noise plays a crucial role in sample diversity."
       },
@@ -53,7 +53,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "4. What is the role of the discriminator in a GAN during the training process?",
+      "question": "4. What does the discriminator output contribute to during GAN training?",
       "answers": {
         "a": "To provide feedback to the generator and help it improve",
         "b": "To generate synthetic samples",
@@ -104,7 +104,7 @@
       "difficulty": "beginner"
     },
     {
-      "question": "7. Which optimization algorithm is commonly used to train GANs?",
+      "question": "7. Which optimizer was used in the original DCGAN paper?",
       "answers": {
         "a": "Gradient Descent",
         "b": "Adam",

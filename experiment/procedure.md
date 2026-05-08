@@ -13,15 +13,15 @@ Import the required Python libraries: PyTorch, Torchvision, NumPy, and Matplotli
 #### 2. Dataset Preparation
 
 - Load the MNIST handwritten digit dataset.
-- Apply pre-processing steps including resizing images to 16×16, converting them to tensors, and normalizing pixel values to the range [−1, 1].
+- Apply preprocessing steps including resizing images to 16×16, converting them to tensors, and normalizing pixel values to the range [−1, 1].
 - Separate the dataset into individual subsets for each digit (0–9).
 - For each digit class, select a fixed number of samples and create separate DataLoaders to train the GAN independently on each digit.
 
 ---
 
-#### 3. Hyper-parameter Initialization
+#### 3. Hyperparameter Initialization
 
-- Define key hyper-parameters: latent vector size, number of training epochs per digit, learning rate, and Adam optimizer momentum term.
+- Define key hyperparameters: latent vector size, number of training epochs per digit, learning rate, and Adam optimizer momentum term.
 - Set binary cross-entropy loss as the adversarial loss function.
 
 ---

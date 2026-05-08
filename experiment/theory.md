@@ -1,6 +1,6 @@
 ### Theory
 
-Generative Adversarial Networks (GANs), proposed by Goodfellow et al. in 2014, are a class of generative models used for learning the underlying data distribution and producing realistic synthetic samples. GANs serve as an alternative to Variational Autoencoders (VAEs) for modelling latent spaces, particularly in image generation tasks. Their key objective is to generate data that is statistically similar to real samples, making the generated outputs difficult to distinguish from actual data.
+Generative Adversarial Networks (GANs), proposed by Goodfellow et al. in 2014, are a class of generative models used for learning the underlying data distribution and producing realistic synthetic samples. GANs serve as an alternative to Variational Autoencoders (VAEs) as generative models, particularly in image generation tasks. Their key objective is to generate data that is statistically similar to real samples, making the generated outputs difficult to distinguish from actual data.
 
 ![Fig. 1. GAN Architecture](images/gan_architecture.png)
 
@@ -58,7 +58,7 @@ where:
 - The **Discriminator** tries to **maximise** $V(D, G)$ by improving its ability to distinguish real from fake data.
 - The **Generator** tries to **minimise** $V(D, G)$ by generating samples that the discriminator classifies as real.
 
-Unlike traditional deep learning models that optimise a fixed loss function, GAN training involves a dynamic optimisation process. Each update to the generator affects the discriminator's learning objective and vice versa. Instead of converging to a single minimum, the training seeks an equilibrium between the two competing networks — this is formally a **Nash equilibrium** of the two-player minimax game. This adversarial nature makes GANs powerful but also challenging to train, often requiring careful selection of network architectures, hyper-parameters, and training strategies.
+Unlike traditional deep learning models that optimise a fixed loss function, GAN training involves a dynamic optimisation process. Each update to the generator affects the discriminator's learning objective and vice versa. Instead of converging to a single minimum, the training seeks an equilibrium between the two competing networks — this is formally a **Nash equilibrium** of the two-player minimax game. This adversarial nature makes GANs powerful but also challenging to train, often requiring careful selection of network architectures, hyperparameters, and training strategies.
 
 Once training is complete, the generator $G$ can map any point $z$ from the latent space to a realistic output image. However, unlike VAEs, GANs do not explicitly enforce continuity or structure in the latent space, which can make interpolation and control more complex.
 
@@ -80,10 +80,11 @@ Once training is complete, the generator $G$ can map any point $z$ from the late
 #### Demerits of Generative Adversarial Networks
 
 - **Training Instability:**
-  Training GANs is notoriously difficult and unstable. The process often suffers from issues such as mode collapse, where the generator produces a limited variety of outputs, and vanishing gradients, where the discriminator becomes too strong, hindering the generator's learning.
+  Training GANs is notoriously difficult and unstable. The process often suffers from issues such as vanishing gradients and imbalance between the generator and discriminator, which can hinder effective learning.
 
 - **Mode Collapse:**
   Mode collapse is a common problem in GANs where the generator produces a narrow range of outputs, failing to capture the diversity of the data distribution. This can lead to poor generalisation and limited applicability.
 
-- **Susceptibility to Adversarial Attacks:**
-  GANs, like other neural networks, can be vulnerable to adversarial attacks, where small perturbations to the input data can significantly impact the output, potentially leading to misleading or harmful results.
+- **Computational Complexity:**
+  GANs typically require significant computational resources and long training times due to the simultaneous training of both the generator and discriminator networks. Achieving stable convergence often requires careful tuning of architectures and hyperparameters.
+

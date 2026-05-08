@@ -19,32 +19,32 @@
       "difficulty": "beginner"
     },
     {
-      "question": "2. How does the discriminator component in a GAN learn to distinguish between real and generated samples?",
+      "question": "2. How does the discriminator improve during GAN training?",
       "answers": {
-        "a": "By minimizing the loss function of the generator",
-        "b": "By maximizing the loss function of the generator",
-        "c": "By minimizing the loss function of the discriminator",
-        "d": "By maximizing the loss function of the discriminator"
+        "a": "By learning to classify real and generated samples correctly",
+        "b": "By directly updating the generator weights",
+        "c": "By reducing the dimensionality of the latent space",
+        "d": "By generating synthetic samples"
       },
       "explanations": {
-        "a": "Incorrect because the discriminator does not update the generator's loss.",
-        "b": "Incorrect because the discriminator optimizes its own objective, not the generator's.",
-        "c": "Correct because the discriminator learns by reducing its classification error between real and fake samples.",
-        "d": "Incorrect because increasing the discriminator's loss would worsen its performance."
+        "a": "Correct because the discriminator is trained as a binary classifier that distinguishes real data from fake data.",
+        "b": "Incorrect because generator parameters are updated separately.",
+        "c": "Incorrect because the discriminator does not modify the latent space.",
+        "d": "Incorrect because sample generation is performed by the generator."
       },
-      "correctAnswer": "c",
+      "correctAnswer": "a",
       "difficulty": "beginner"
     },
     {
-      "question": "3. Which loss function is commonly used in GANs?",
+      "question": "3. Which loss function is commonly used in standard GANs?",
       "answers": {
-        "a": "Cross-entropy loss",
+        "a": "Hinge loss",
         "b": "Mean squared error loss",
         "c": "Binary cross-entropy (logistic loss)",
         "d": "Kullback-Leibler divergence"
       },
       "explanations": {
-        "a": "Incorrect because standard GANs specifically use a binary formulation rather than multi-class cross-entropy.",
+        "a": "Incorrect because hinge loss is mainly used in some GAN variants, not the original standard GAN formulation.",
         "b": "Incorrect because MSE is mainly used in regression tasks, not binary discrimination.",
         "c": "Correct because GANs frame real vs fake discrimination as a binary classification problem.",
         "d": "Incorrect because KL divergence is not directly used in standard GAN loss functions."
@@ -70,54 +70,54 @@
       "difficulty": "beginner"
     },
     {
-      "question": "5. How does the training process of a GAN typically work?",
+      "question": "5. How is GAN training formulated in the original GAN framework proposed by Ian Goodfellow?",
       "answers": {
-        "a": "The generator and discriminator are trained alternately",
-        "b": "The generator and discriminator are trained simultaneously",
-        "c": "The generator is trained first, followed by the discriminator",
-        "d": "The discriminator is trained first, followed by the generator"
+        "a": "The generator and discriminator are trained independently",
+        "b": "The generator and discriminator are trained simultaneously in a minimax game",
+        "c": "The generator is fully trained before the discriminator",
+        "d": "The discriminator is permanently fixed during training"
       },
       "explanations": {
-        "a": "Incorrect because, although updates alternate in practice, the learning objective is defined as a simultaneous minimax game.",
-        "b": "Correct because GAN training is formulated as a two-player minimax optimization where both networks learn together.",
-        "c": "Incorrect because both models must co-evolve to improve generation quality.",
-        "d": "Incorrect because training only one network independently breaks the adversarial framework."
+        "a": "Incorrect because both networks depend on each other during learning.",
+        "b": "Correct because the original GAN formulation models training as a two-player minimax optimization problem.",
+        "c": "Incorrect because GAN training requires both networks to co-evolve.",
+        "d": "Incorrect because the discriminator is continuously updated."
       },
       "correctAnswer": "b",
       "difficulty": "beginner"
     },
     {
-      "question": "6. Which approach is used to stabilize GAN training by controlling the learning rate of the Generator and Discriminator?",
+      "question": "6. Which technique is commonly used to improve GAN training stability?",
       "answers": {
-        "a": "Learning rate decay",
-        "b": "Learning rate annealing",
-        "c": "Learning rate scheduling",
-        "d": "Learning rate adjustment"
+        "a": "Learning rate scheduling",
+        "b": "Increasing image resolution at every iteration",
+        "c": "Removing the discriminator network",
+        "d": "Disabling backpropagation"
       },
       "explanations": {
-        "a": "Incorrect because it uniformly reduces the rate.",
-        "b": "Incorrect because it is less adaptive.",
-        "c": "Correct because it dynamically adjusts learning rates during training.",
-        "d": "Incorrect because it is too generic."
+        "a": "Correct because dynamically adjusting the learning rate can improve convergence and stability during GAN training.",
+        "b": "Incorrect because resolution changes alone do not stabilize training.",
+        "c": "Incorrect because GANs fundamentally require a discriminator.",
+        "d": "Incorrect because backpropagation is essential for training."
       },
-      "correctAnswer": "c",
+      "correctAnswer": "a",
       "difficulty": "beginner"
     },
     {
-      "question": "7. In GANs, what happens when the discriminator becomes unable to distinguish real from fake samples?",
+      "question": "7. What does it indicate when the discriminator can no longer reliably distinguish real from generated samples?",
       "answers": {
-        "a": "Training stops",
-        "b": "Generator updates its weights",
-        "c": "Discriminator becomes the generator",
-        "d": "Discriminator becomes more efficient"
+        "a": "The GAN has reached a balanced adversarial state",
+        "b": "The discriminator has stopped updating permanently",
+        "c": "The generator has failed completely",
+        "d": "The discriminator becomes the generator"
       },
       "explanations": {
-        "a": "Incorrect because training usually continues.",
-        "b": "Correct because feedback still guides generator improvement.",
-        "c": "Incorrect because roles remain fixed.",
-        "d": "Incorrect because inability implies reduced effectiveness."
+        "a": "Correct because an ideal GAN equilibrium occurs when generated samples become difficult to distinguish from real samples.",
+        "b": "Incorrect because training may still continue.",
+        "c": "Incorrect because realistic outputs indicate generator improvement.",
+        "d": "Incorrect because their roles remain unchanged."
       },
-      "correctAnswer": "b",
+      "correctAnswer": "a",
       "difficulty": "beginner"
     },
     {
@@ -138,24 +138,24 @@
       "difficulty": "beginner"
     },
     {
-      "question": "9. In which stage of GAN training does mode collapse occur?",
+      "question": "9. What is mode collapse in GAN training?",
       "answers": {
-        "a": "Early stage",
-        "b": "Middle stage",
-        "c": "Late stage",
-        "d": "Throughout the training process"
+        "a": "The discriminator stops learning completely",
+        "b": "The generator produces limited varieties of outputs repeatedly",
+        "c": "The latent space becomes larger during training",
+        "d": "The discriminator generates synthetic images"
       },
       "explanations": {
-        "a": "Incorrect because collapse usually develops later.",
-        "b": "Incorrect because it can still recover.",
-        "c": "Incorrect because collapse is not restricted to a stage.",
-        "d": "Correct because mode collapse can occur at any point."
+        "a": "Incorrect because mode collapse is primarily related to generator behaviour.",
+        "b": "Correct because mode collapse occurs when the generator fails to capture the diversity of the data distribution.",
+        "c": "Incorrect because latent dimensionality typically remains fixed.",
+        "d": "Incorrect because image generation is performed by the generator."
       },
-      "correctAnswer": "d",
+      "correctAnswer": "b",
       "difficulty": "beginner"
     },
     {
-      "question": "10. Which technique can be used to address the problem of mode collapse in GANs?",
+      "question": "10. Which technique can help reduce mode collapse in GANs?",
       "answers": {
         "a": "Gradient penalty",
         "b": "Batch normalization",
