@@ -5,3 +5,5 @@
 2. Radford, A., Metz, L., & Chintala, S., "Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks," presented at the International Conference on Learning Representations 2016, 2016.
 
 3. Goodfellow, I., “NIPS 2016 Tutorial: Generative Adversarial Networks,” presented at the Neural Information Processing Systems Conference 2016, Barcelona, Spain, 2016.
+
+4. F. Chollet, Deep Learning with Python, 2nd ed. Shelter Island, NY, USA: Manning Publications, 2021.

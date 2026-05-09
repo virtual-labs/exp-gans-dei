@@ -55,9 +55,9 @@
     {
       "question": "4. What does the discriminator output contribute to during GAN training?",
       "answers": {
-        "a": "To provide feedback to the generator and help it improve",
-        "b": "To generate synthetic samples",
-        "c": "To adjust the learning rate during training",
+        "a": "Provide feedback to the generator and help it improve",
+        "b": "Generate synthetic samples",
+        "c": "Adjust the learning rate during training",
         "d": "None of the above"
       },
       "explanations": {
