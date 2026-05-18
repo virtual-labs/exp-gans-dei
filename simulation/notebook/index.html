@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>DCGAN Training Experiment - Deep Learning Virtual Lab</title>
+	<link rel="stylesheet" href="./css/main.css">
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+	<style>
+		.btn-back-home:hover {
+			background: #4f7df9 !important;
+			color: #fff !important;
+			transform: translateY(-50%) translateY(-1px) !important;
+			box-shadow: 0 2px 8px rgba(79, 125, 249, 0.3);
+		}
+	</style>
+</head>
+
+<body>
+	<div class="simulation-container">
+		<!-- Step Sidebar -->
+		<aside class="step-sidebar">
+			<div class="step-sidebar-header">
+				<h3>Experiment Steps</h3>
+			</div>
+			<div class="step-list">
+				<div class="step-item" data-step="1">
+					<div class="step-indicator"><span class="step-number">1</span></div>
+					<div class="step-content"><span class="step-title">Import Libraries</span></div>
+				</div>
+				<div class="step-item" data-step="2">
+					<div class="step-indicator"><span class="step-number">2</span></div>
+					<div class="step-content"><span class="step-title">Set Device</span></div>
+				</div>
+				<div class="step-item" data-step="3">
+					<div class="step-indicator"><span class="step-number">3</span></div>
+					<div class="step-content"><span class="step-title">Load & Separate Dataset</span></div>
+				</div>
+				<div class="step-item" data-step="4">
+					<div class="step-indicator"><span class="step-number">4</span></div>
+					<div class="step-content"><span class="step-title">Define Hyperparameters</span></div>
+				</div>
+				<div class="step-item" data-step="5">
+					<div class="step-indicator"><span class="step-number">5</span></div>
+					<div class="step-content"><span class="step-title">Define Generator</span></div>
+				</div>
+				<div class="step-item" data-step="6">
+					<div class="step-indicator"><span class="step-number">6</span></div>
+					<div class="step-content"><span class="step-title">Define Discriminator</span></div>
+				</div>
+				<div class="step-item" data-step="7">
+					<div class="step-indicator"><span class="step-number">7</span></div>
+					<div class="step-content"><span class="step-title">Weight Initialization</span></div>
+				</div>
+				<div class="step-item" data-step="8">
+					<div class="step-indicator"><span class="step-number">8</span></div>
+					<div class="step-content"><span class="step-title">Define Loss Criterion</span></div>
+				</div>
+				<div class="step-item" data-step="9">
+					<div class="step-indicator"><span class="step-number">9</span></div>
+					<div class="step-content"><span class="step-title">Visualization Function</span></div>
+				</div>
+				<div class="step-item" data-step="10">
+					<div class="step-indicator"><span class="step-number">10</span></div>
+					<div class="step-content"><span class="step-title">Quality Metrics Function</span></div>
+				</div>
+				<div class="step-item" data-step="11">
+					<div class="step-indicator"><span class="step-number">11</span></div>
+					<div class="step-content"><span class="step-title">Initialize Training Storage</span></div>
+				</div>
+				<div class="step-item" data-step="12">
+					<div class="step-indicator"><span class="step-number">12</span></div>
+					<div class="step-content"><span class="step-title">Train All Digits (0-9)</span></div>
+				</div>
+				<div class="step-item" data-step="13">
+					<div class="step-indicator"><span class="step-number">13</span></div>
+					<div class="step-content"><span class="step-title">Final Digit Grid</span></div>
+				</div>
+				<div class="step-item" data-step="14">
+					<div class="step-indicator"><span class="step-number">14</span></div>
+					<div class="step-content"><span class="step-title">Training Loss Charts</span></div>
+				</div>
+				<div class="step-item" data-step="15">
+					<div class="step-indicator"><span class="step-number">15</span></div>
+					<div class="step-content"><span class="step-title">Quality Metrics Charts</span></div>
+				</div>
+				<div class="step-item" data-step="16">
+					<div class="step-indicator"><span class="step-number">16</span></div>
+					<div class="step-content"><span class="step-title">Training Summary</span></div>
+				</div>
+				<div class="step-item" data-step="17">
+					<div class="step-indicator"><span class="step-number">17</span></div>
+					<div class="step-content"><span class="step-title">Interactive Generation</span></div>
+				</div>
+			</div>
+			<div class="step-sidebar-footer">
+				<button class="reset-btn" id="resetBtn">
+					<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+						<path
+							d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" />
+					</svg>
+					Reset
+				</button>
+				<button class="run-all-btn" id="downloadBtn">
+					Download Experiment
+				</button>
+			</div>
+		</aside>
+
+		<!-- Main Content -->
+		<main class="notebook-area">
+			<!-- Notebook Header -->
+			<div class="notebook-header" style="position: relative;">
+				<h1 class="notebook-title">DCGAN Training on MNIST Dataset</h1>
+				<p class="notebook-subtitle">Deep Convolutional Generative Adversarial Network - Digit-wise Training</p>
+				<a href="../index.html" class="btn-back-home"
+					style="position: absolute; right: 0; top: 50%; transform: translateY(-50); display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.4rem 1.1rem; font-size: 0.8rem; font-weight: 600; color: #4f7df9; background: #eef2ff; border: 1px solid #4f7df9; border-radius: 20px; text-decoration: none; transition: all 0.2s; font-family: 'Inter', sans-serif;">
+					<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+						stroke-linecap="round" stroke-linejoin="round">
+						<path d="M19 12H5" />
+						<path d="M12 19l-7-7 7-7" />
+					</svg>
+					Back to Home
+				</a>
+			</div>
+
+			<!-- Parameter Selector -->
+			<div class="param-selector">
+				<div class="param-group">
+					<label for="epochSelect">Training Epochs:</label>
+					<select id="epochSelect" class="param-dropdown">
+						<option value="25" selected>25 Epochs per Digit</option>
+						<option value="30">30 Epochs per Digit</option>
+					</select>
+				</div>
+			</div>
+
+			<!-- Cell 1: Import Libraries -->
+			<div class="notebook-cell" data-cell="1" data-step="1">
+				<div class="cell-header">
+					<span class="cell-label">Cell 1: Import Libraries</span>
+					<button class="run-btn">
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+							<path d="M8 5v14l11-7z" />
+						</svg>
+						Run
+					</button>
+				</div>
+				<div class="cell-code">
+					<pre><code class="language-python"><span class="keyword">import</span> torch
+<span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn
+<span class="keyword">import</span> torch.optim <span class="keyword">as</span> optim
+<span class="keyword">from</span> torchvision <span class="keyword">import</span> datasets, transforms
+<span class="keyword">from</span> torchvision.utils <span class="keyword">import</span> make_grid
+<span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt
+<span class="keyword">import</span> numpy <span class="keyword">as</span> np
+<span class="keyword">import</span> copy</code></pre>
+				</div>
+				<div class="cell-output hidden">
+					<div class="output-label">Output:</div>
+					<div class="output-content">
+						<div class="text-output">
+							<pre><span class="success-text">✓ Libraries imported successfully</span></pre>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Cell 2: Set Device -->
+			<div class="notebook-cell" data-cell="2" data-step="2">
+				<div class="cell-header">
+					<span class="cell-label">Cell 2: Set Device</span>
+					<button class="run-btn">
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+							<path d="M8 5v14l11-7z" />
+						</svg>
+						Run
+					</button>
+				</div>
+				<div class="cell-code">
+					<pre><code class="language-python">device = torch.device(<span class="string">"cuda"</span> <span class="keyword">if</span> torch.cuda.is_available() <span class="keyword">else</span> <span class="string">"cpu"</span>)
+<span class="builtin">print</span>(<span class="string">"Using device:"</span>, device)</code></pre>
+				</div>
+				<div class="cell-output hidden">
+					<div class="output-label">Output:</div>
+					<div class="output-content">
+						<div class="text-output">
+							<pre>Using device: cpu</pre>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Cell 3: Load and Separate Dataset -->
+			<div class="notebook-cell" data-cell="3" data-step="3">
+				<div class="cell-header">
+					<span class="cell-label">Cell 3: Load and Separate Dataset by Digit Class</span>
+					<button class="run-btn">
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+							<path d="M8 5v14l11-7z" />
+						</svg>
+						Run
+					</button>
+				</div>
+				<div class="cell-code">
+					<pre><code class="language-python"><span class="comment"># Dataset preparation - separate by digit class</span>
+transform = transforms.Compose([
+    transforms.Resize(<span class="number">16</span>),
+    transforms.ToTensor(),
+    transforms.Normalize((<span class="number">0.5</span>,), (<span class="number">0.5</span>,))
+])
+
+full_dataset = datasets.MNIST(root=<span class="string">"./data"</span>, train=<span class="keyword">True</span>, transform=transform, download=<span class="keyword">True</span>)
+
+<span class="comment"># Separate data by digit class (0-9)</span>
+digit_datasets = {}
+digit_loaders = {}
+
+<span class="keyword">for</span> digit <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">10</span>):
+    indices = [i <span class="keyword">for</span> i, (_, label) <span class="keyword">in</span> <span class="builtin">enumerate</span>(full_dataset) <span class="keyword">if</span> label == digit]
+    digit_datasets[digit] = torch.utils.data.Subset(full_dataset, indices[:<span class="number">1500</span>])
+    digit_loaders[digit] = torch.utils.data.DataLoader(
+        digit_datasets[digit],
+        batch_size=<span class="number">64</span>,
+        shuffle=<span class="keyword">True</span>
+    )
+    <span class="builtin">print</span>(<span class="format">f"Digit {digit}: {len(digit_datasets[digit])} images"</span>)</code></pre>
+				</div>
+				<div class="cell-output hidden">
+					<div class="output-label">Output:</div>
+					<div class="output-content">
+						<div class="text-output">
+							<pre>Digit 0: 1500 images
+Digit 1: 1500 images
+Digit 2: 1500 images
+Digit 3: 1500 images
+Digit 4: 1500 images
+Digit 5: 1500 images
+Digit 6: 1500 images
+Digit 7: 1500 images
+Digit 8: 1500 images
+Digit 9: 1500 images</pre>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Cell 4: Hyperparameters -->
+			<div class="notebook-cell" data-cell="4" data-step="4">
+				<div class="cell-header">
+					<span class="cell-label">Cell 4: Define Hyperparameters</span>
+					<button class="run-btn">
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+							<path d="M8 5v14l11-7z" />
+						</svg>
+						Run
+					</button>
+				</div>
+				<div class="cell-code">
+					<pre><code class="language-python" id="hyperparametersCode"><span class="comment"># Hyperparameters</span>
+latent_dim = <span class="number">100</span>
+epochs_per_digit = <span class="number">25</span>
+lr = <span class="number">0.0002</span>
+beta1 = <span class="number">0.5</span></code></pre>
+				</div>
+				<div class="cell-output hidden">
+					<div class="output-label">Output:</div>
+					<div class="output-content">
+						<div class="text-output">
+							<pre><span class="success-text">✓ Hyperparameters defined successfully</span></pre>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Cell 5: Generator -->
+			<div class="notebook-cell" data-cell="5" data-step="5">
+				<div class="cell-header">
+					<span class="cell-label">Cell 5: Define Generator Architecture</span>
+					<button class="run-btn">
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+							<path d="M8 5v14l11-7z" />
+						</svg>
+						Run
+					</button>
+				</div>
+				<div class="cell-code">
+					<pre><code class="language-python"><span class="comment"># Generator</span>
+<span class="keyword">class</span> <span class="class-name">Generator</span>(nn.Module):
+    <span class="keyword">def</span> <span class="function">__init__</span>(<span class="builtin">self</span>):
+        <span class="builtin">super</span>().__init__()
+        <span class="builtin">self</span>.net = nn.Sequential(
+            nn.ConvTranspose2d(latent_dim, <span class="number">256</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">0</span>, bias=<span class="keyword">False</span>),
+            nn.BatchNorm2d(<span class="number">256</span>),
+            nn.ReLU(<span class="keyword">True</span>),
+
+            nn.ConvTranspose2d(<span class="number">256</span>, <span class="number">128</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">1</span>, bias=<span class="keyword">False</span>),
+            nn.BatchNorm2d(<span class="number">128</span>),
+            nn.ReLU(<span class="keyword">True</span>),
+
+            nn.ConvTranspose2d(<span class="number">128</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">1</span>, bias=<span class="keyword">False</span>),
+            nn.Tanh()
+        )
+
+    <span class="keyword">def</span> <span class="function">forward</span>(<span class="builtin">self</span>, z):
+        <span class="keyword">return</span> <span class="builtin">self</span>.net(z)</code></pre>
+				</div>
+				<div class="cell-output hidden">
+					<div class="output-label">Output:</div>
+					<div class="output-content">
+						<div class="text-output">
+							<pre><span class="success-text">✓ Generator architecture defined successfully</span></pre>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Cell 6: Discriminator -->
+			<div class="notebook-cell" data-cell="6" data-step="6">
+				<div class="cell-header">
+					<span class="cell-label">Cell 6: Define Discriminator Architecture</span>
+					<button class="run-btn">
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+							<path d="M8 5v14l11-7z" />
+						</svg>
+						Run
+					</button>
+				</div>
+				<div class="cell-code">
+					<pre><code class="language-python"><span class="comment"># Discriminator: 16x16 image -> probability real/fake</span>
+<span class="keyword">class</span> <span class="class-name">Discriminator</span>(nn.Module):
+    <span class="keyword">def</span> <span class="function">__init__</span>(<span class="builtin">self</span>):
+        <span class="builtin">super</span>().__init__()
+        <span class="builtin">self</span>.net = nn.Sequential(
+            nn.Conv2d(<span class="number">1</span>, <span class="number">128</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">1</span>, bias=<span class="keyword">False</span>),   <span class="comment"># 16x16 -> 8x8</span>
+            nn.LeakyReLU(<span class="number">0.2</span>, inplace=<span class="keyword">True</span>),
+
+            nn.Conv2d(<span class="number">128</span>, <span class="number">256</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">1</span>, bias=<span class="keyword">False</span>), <span class="comment"># 8x8 -> 4x4</span>
+            nn.BatchNorm2d(<span class="number">256</span>),
+            nn.LeakyReLU(<span class="number">0.2</span>, inplace=<span class="keyword">True</span>),
+
+            nn.Conv2d(<span class="number">256</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">0</span>, bias=<span class="keyword">False</span>),   <span class="comment"># 4x4 -> 1x1</span>
+            nn.Sigmoid()
+        )
+
+    <span class="keyword">def</span> <span class="function">forward</span>(<span class="builtin">self</span>, x):
+        <span class="keyword">return</span> <span class="builtin">self</span>.net(x).view(<span class="number">-1</span>, <span class="number">1</span>)</code></pre>
+				</div>
+				<div class="cell-output hidden">
+					<div class="output-label">Output:</div>
+					<div class="output-content">
+						<div class="text-output">
+							<pre><span class="success-text">✓ Discriminator architecture defined successfully</span></pre>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Cell 7: Weight Initialization -->
+			<div class="notebook-cell" data-cell="7" data-step="7">
+				<div class="cell-header">
+					<span class="cell-label">Cell 7: Define Weight Initialization Function</span>
+					<button class="run-btn">
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+							<path d="M8 5v14l11-7z" />
+						</svg>
+						Run
+					</button>
+				</div>
+				<div class="cell-code">
+					<pre><code class="language-python"><span class="comment"># Weight initialization</span>
+<span class="keyword">def</span> <span class="function">weights_init</span>(m):
+    classname = m.__class__.__name__
+    <span class="keyword">if</span> classname.find(<span class="string">'Conv'</span>) != <span class="number">-1</span>:
+        nn.init.normal_(m.weight.data, <span class="number">0.0</span>, <span class="number">0.02</span>)
+    <span class="keyword">elif</span> classname.find(<span class="string">'BatchNorm'</span>) != <span class="number">-1</span>:
+        nn.init.normal_(m.weight.data, <span class="number">1.0</span>, <span class="number">0.02</span>)
+        nn.init.constant_(m.bias.data, <span class="number">0</span>)</code></pre>
+				</div>
+				<div class="cell-output hidden">
+					<div class="output-label">Output:</div>
+					<div class="output-content">
+						<div class="text-output">
+							<pre><span class="success-text">✓ Weight initialization function defined</span></pre>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Cell 8: Loss Criterion -->
+			<div class="notebook-cell" data-cell="8" data-step="8">
+				<div class="cell-header">
+					<span class="cell-label">Cell 8: Define Loss Criterion</span>
+					<button class="run-btn">
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+							<path d="M8 5v14l11-7z" />
+						</svg>
+						Run
+					</button>
+				</div>
+				<div class="cell-code">
+					<pre><code class="language-python">criterion = nn.BCELoss()</code></pre>
+				</div>
+				<div class="cell-output hidden">
+					<div class="output-label">Output:</div>
+					<div class="output-content">
+						<div class="text-output">
+							<pre><span class="success-text">✓ Loss criterion defined (Binary Cross Entropy)</span></pre>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Cell 9: Visualization Function -->
+			<div class="notebook-cell" data-cell="9" data-step="9">
+				<div class="cell-header">
+					<span class="cell-label">Cell 9: Define Visualization Function</span>
+					<button class="run-btn">
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+							<path d="M8 5v14l11-7z" />
+						</svg>
+						Run
+					</button>
+				</div>
+				<div class="cell-code">
+					<pre><code class="language-python"><span class="keyword">def</span> <span class="function">show_real_vs_fake</span>(real, fake, digit):
+    real_grid = make_grid(real[:<span class="number">8</span>], nrow=<span class="number">4</span>, normalize=<span class="keyword">True</span>)
+    fake_grid = make_grid(fake[:<span class="number">8</span>], nrow=<span class="number">4</span>, normalize=<span class="keyword">True</span>)
+
+    plt.figure(figsize=(<span class="number">8</span>, <span class="number">4</span>))
+    plt.subplot(<span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>)
+    plt.imshow(real_grid.permute(<span class="number">1</span>, <span class="number">2</span>, <span class="number">0</span>))
+    plt.title(<span class="format">f"Real Images - Digit {digit}"</span>)
+    plt.axis(<span class="string">"off"</span>)
+
+    plt.subplot(<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>)
+    plt.imshow(fake_grid.permute(<span class="number">1</span>, <span class="number">2</span>, <span class="number">0</span>))
+    plt.title(<span class="format">f"Generated Images - Digit {digit}"</span>)
+    plt.axis(<span class="string">"off"</span>)
+
+    plt.tight_layout()
+    plt.show()</code></pre>
+				</div>
+				<div class="cell-output hidden">
+					<div class="output-label">Output:</div>
+					<div class="output-content">
+						<div class="text-output">
+							<pre><span class="success-text">✓ Visualization function defined</span></pre>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Cell 10: Quality Metrics Function -->
+			<div class="notebook-cell" data-cell="10" data-step="10">
+				<div class="cell-header">
+					<span class="cell-label">Cell 10: Define Image Quality Metrics Function</span>
+					<button class="run-btn">
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+							<path d="M8 5v14l11-7z" />
+						</svg>
+						Run
+					</button>
+				</div>
+				<div class="cell-code">
+					<pre><code class="language-python"><span class="keyword">def</span> <span class="function">calculate_image_quality</span>(images):
+    images = images.detach().cpu().numpy()
+    diversity = np.std(images)
+
+    sharpness_values = []
+    <span class="keyword">for</span> img <span class="keyword">in</span> images:
+        img_2d = img.squeeze()
+        grad_y, grad_x = np.gradient(img_2d)
+        sharpness_values.append(np.mean(np.abs(grad_x)) + np.mean(np.abs(grad_y)))
+
+    sharpness = np.mean(sharpness_values)
+    contrast = np.mean([img.max() - img.min() <span class="keyword">for</span> img <span class="keyword">in</span> images])
+
+    <span class="keyword">return</span> {
+        <span class="string">'diversity'</span>: diversity,
+        <span class="string">'sharpness'</span>: sharpness,
+        <span class="string">'contrast'</span>: contrast
+    }</code></pre>
+				</div>
+				<div class="cell-output hidden">
+					<div class="output-label">Output:</div>
+					<div class="output-content">
+						<div class="text-output">
+							<pre><span class="success-text">✓ Image quality metrics function defined</span></pre>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Cell 11: Initialize Training Storage -->
+			<div class="notebook-cell" data-cell="11" data-step="11">
+				<div class="cell-header">
+					<span class="cell-label">Cell 11: Initialize Training Storage</span>
+					<button class="run-btn">
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+							<path d="M8 5v14l11-7z" />
+						</svg>
+						Run
+					</button>
+				</div>
+				<div class="cell-code">
+					<pre><code class="language-python">trained_generators = {}
+metrics_history = {digit: {<span class="string">'g_loss'</span>: [], <span class="string">'d_loss'</span>: [], <span class="string">'quality'</span>: []} <span class="keyword">for</span> digit <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">10</span>)}
+moving_avg_window = <span class="number">3</span></code></pre>
+				</div>
+				<div class="cell-output hidden">
+					<div class="output-label">Output:</div>
+					<div class="output-content">
+						<div class="text-output">
+							<pre><span class="success-text">✓ Training storage initialized for 10 digits</span></pre>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Cell 12: Training Loop -->
+			<div class="notebook-cell" data-cell="12" data-step="12">
+				<div class="cell-header">
+					<span class="cell-label">Cell 12: Train GANs for All Digits (0-9) Sequentially</span>
+					<button class="run-btn">
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+							<path d="M8 5v14l11-7z" />
+						</svg>
+						Run
+					</button>
+				</div>
+				<div class="cell-code">
+					<pre><code class="language-python"><span class="keyword">for</span> digit <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">10</span>):
+    <span class="builtin">print</span>(<span class="format">f"\n{'='*70}"</span>)
+    <span class="builtin">print</span>(<span class="format">f"TRAINING DIGIT {digit}"</span>)
+    <span class="builtin">print</span>(<span class="format">f"{'='*70}\n"</span>)
+
+    generator = Generator().to(device)
+    discriminator = Discriminator().to(device)
+
+    generator.apply(weights_init)
+    discriminator.apply(weights_init)
+
+    optimizer_G = optim.Adam(generator.parameters(), lr=lr, betas=(beta1, <span class="number">0.999</span>))
+    optimizer_D = optim.Adam(discriminator.parameters(), lr=lr, betas=(beta1, <span class="number">0.999</span>))
+
+    <span class="comment"># Cache one real batch for visualization</span>
+    fixed_real_batch, _ = <span class="builtin">next</span>(<span class="builtin">iter</span>(digit_loaders[digit]))
+    fixed_real_batch = fixed_real_batch.to(device)
+
+    <span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="builtin">range</span>(epochs_per_digit):
+        epoch_g_loss = <span class="number">0</span>
+        epoch_d_loss = <span class="number">0</span>
+        num_batches = <span class="number">0</span>
+
+        <span class="keyword">for</span> batch_idx, (real_images, _) <span class="keyword">in</span> <span class="builtin">enumerate</span>(digit_loaders[digit]):
+            batch_size = real_images.size(<span class="number">0</span>)
+            real_images = real_images.to(device)
+
+            real_labels = torch.full((batch_size, <span class="number">1</span>), <span class="number">0.9</span>, device=device)
+            fake_labels = torch.full((batch_size, <span class="number">1</span>), <span class="number">0.1</span>, device=device)
+
+            <span class="keyword">if</span> batch_idx % <span class="number">2</span> == <span class="number">0</span>:
+                optimizer_D.zero_grad()
+
+                real_output = discriminator(real_images)
+                d_real_loss = criterion(real_output, real_labels)
+
+                noise = torch.randn(batch_size, latent_dim, <span class="number">1</span>, <span class="number">1</span>, device=device)
+                fake_images = generator(noise)
+                fake_output = discriminator(fake_images.detach())
+                d_fake_loss = criterion(fake_output, fake_labels)
+
+                d_loss = d_real_loss + d_fake_loss
+                d_loss.backward()
+                optimizer_D.step()
+
+                epoch_d_loss += d_loss.item()
+            <span class="keyword">else</span>:
+                noise = torch.randn(batch_size, latent_dim, <span class="number">1</span>, <span class="number">1</span>, device=device)
+                fake_images = generator(noise)
+
+            optimizer_G.zero_grad()
+            fake_output = discriminator(fake_images)
+            g_loss = criterion(fake_output, real_labels)
+            g_loss.backward()
+            optimizer_G.step()
+
+            epoch_g_loss += g_loss.item()
+            num_batches += <span class="number">1</span>
+
+        avg_g_loss = epoch_g_loss / num_batches
+        avg_d_loss = epoch_d_loss / (num_batches // <span class="number">2</span>)
+
+        <span class="keyword">with</span> torch.no_grad():
+            sample_noise = torch.randn(<span class="number">16</span>, latent_dim, <span class="number">1</span>, <span class="number">1</span>, device=device)
+            sample_images = generator(sample_noise)
+            quality_metrics = calculate_image_quality(sample_images)
+
+        metrics_history[digit][<span class="string">'g_loss'</span>].append(avg_g_loss)
+        metrics_history[digit][<span class="string">'d_loss'</span>].append(avg_d_loss)
+        metrics_history[digit][<span class="string">'quality'</span>].append(quality_metrics)
+
+        <span class="keyword">if</span> <span class="builtin">len</span>(metrics_history[digit][<span class="string">'g_loss'</span>]) >= moving_avg_window:
+            smoothed_g_loss = <span class="builtin">sum</span>(metrics_history[digit][<span class="string">'g_loss'</span>][-moving_avg_window:]) / moving_avg_window
+        <span class="keyword">else</span>:
+            smoothed_g_loss = avg_g_loss
+
+        quality = <span class="string">"✅"</span> <span class="keyword">if</span> smoothed_g_loss < <span class="number">2.5</span> <span class="keyword">else</span> <span class="string">"⚠️"</span> <span class="keyword">if</span> smoothed_g_loss < <span class="number">4.5</span> <span class="keyword">else</span> <span class="string">"❌"</span>
+
+        <span class="keyword">if</span> (epoch + <span class="number">1</span>) % <span class="number">5</span> == <span class="number">0</span> <span class="keyword">or</span> epoch == <span class="number">0</span>:
+            <span class="builtin">print</span>(<span class="format">f"Epoch [{epoch+1}/{epochs_per_digit}] | "</span>
+                  <span class="format">f"G Loss: {avg_g_loss:.3f} | D Loss: {avg_d_loss:.3f} | Quality: {quality}"</span>)
+
+            <span class="comment"># Real vs Generated visualization</span>
+            show_real_vs_fake(fixed_real_batch, sample_images, digit)
+
+    trained_generators[digit] = copy.deepcopy(generator.state_dict())
+    <span class="builtin">print</span>(<span class="format">f"\n✓ Digit {digit} training complete!\n"</span>)
+
+<span class="builtin">print</span>(<span class="string">"\nALL DIGITS TRAINING COMPLETE!"</span>)</code></pre>
+				</div>
+				<div class="cell-output hidden">
+					<div class="output-label">Output:</div>
+					<div class="output-content">
+						<div class="training-output">
+							<pre id="trainingLog">Training in progress...</pre>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Cell 13: Final Digit Grid -->
+			<div class="notebook-cell" data-cell="13" data-step="13">
+				<div class="cell-header">
+					<span class="cell-label">Cell 13: Generate All Trained Digits Grid (6 samples per digit)</span>
+					<button class="run-btn">
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+							<path d="M8 5v14l11-7z" />
+						</svg>
+						Run
+					</button>
+				</div>
+				<div class="cell-code">
+					<pre><code class="language-python"><span class="comment"># Load all trained generators and show all digits together</span>
+<span class="builtin">print</span>(<span class="string">"Loading all trained generators...\n"</span>)
+
+generator = Generator().to(device)
+all_samples = []
+
+<span class="keyword">for</span> digit <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">10</span>):
+    generator.load_state_dict(trained_generators[digit])
+    generator.eval()
+    
+    <span class="keyword">with</span> torch.no_grad():
+        noise = torch.randn(<span class="number">6</span>, latent_dim, <span class="number">1</span>, <span class="number">1</span>, device=device)
+        samples = generator(noise)
+        all_samples.append(samples)
+
+final_grid = make_grid(torch.cat(all_samples), nrow=<span class="number">6</span>, normalize=<span class="keyword">True</span>)
+
+plt.figure(figsize=(<span class="number">12</span>, <span class="number">18</span>))
+plt.imshow(final_grid.cpu().permute(<span class="number">1</span>, <span class="number">2</span>, <span class="number">0</span>))
+plt.title(<span class="string">"All Trained Digits (6 samples per digit, rows 0-9)"</span>, fontsize=<span class="number">14</span>, fontweight=<span class="string">'bold'</span>)
+plt.axis(<span class="string">"off"</span>)
+plt.tight_layout()
+plt.show()</code></pre>
+				</div>
+				<div class="cell-output hidden">
+					<div class="output-label">Output:</div>
+					<div class="output-content">
+						<div id="finalDigitGrid" class="final-grid-container"></div>
+						<div class="text-output" style="margin-top: 10px;">
+							<pre><span class="success-text">✓ Generated 60 images (6 per digit) showing all trained digits 0-9</span></pre>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Cell 14: Training Loss Charts -->
+			<div class="notebook-cell" data-cell="14" data-step="14">
+				<div class="cell-header">
+					<span class="cell-label">Cell 14: Plot Training Metrics by Digit</span>
+					<button class="run-btn">
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+							<path d="M8 5v14l11-7z" />
+						</svg>
+						Run
+					</button>
+				</div>
+				<div class="cell-code">
+					<pre><code class="language-python"><span class="comment"># Plot training metrics for all digits</span>
+fig, axes = plt.subplots(<span class="number">2</span>, <span class="number">5</span>, figsize=(<span class="number">18</span>, <span class="number">8</span>))
+fig.suptitle(<span class="string">'Training Metrics by Digit (Same GAN Architecture)'</span>, fontsize=<span class="number">16</span>, fontweight=<span class="string">'bold'</span>)
+
+<span class="keyword">for</span> digit <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">10</span>):
+    row = digit // <span class="number">5</span>
+    col = digit % <span class="number">5</span>
+    ax = axes[row, col]
+    
+    ax.plot(metrics_history[digit][<span class="string">'g_loss'</span>], label=<span class="string">'G Loss'</span>, color=<span class="string">'blue'</span>, linewidth=<span class="number">2</span>)
+    ax.plot(metrics_history[digit][<span class="string">'d_loss'</span>], label=<span class="string">'D Loss'</span>, color=<span class="string">'red'</span>, linewidth=<span class="number">2</span>)
+    ax.set_title(<span class="format">f'Digit {digit}'</span>, fontweight=<span class="string">'bold'</span>)
+    ax.set_xlabel(<span class="string">'Epoch'</span>)
+    ax.set_ylabel(<span class="string">'Loss'</span>)
+    ax.legend(loc=<span class="string">'upper right'</span>)
+    ax.grid(<span class="keyword">True</span>, alpha=<span class="number">0.3</span>)
+
+plt.tight_layout()
+plt.show()</code></pre>
+				</div>
+				<div class="cell-output hidden">
+					<div class="output-label">Output:</div>
+					<div class="output-content">
+						<div id="lossChartsContainer" class="charts-grid"></div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Cell 15: Quality Metrics Charts -->
+			<div class="notebook-cell" data-cell="15" data-step="15">
+				<div class="cell-header">
+					<span class="cell-label">Cell 15: Plot Image Quality Metrics</span>
+					<button class="run-btn">
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+							<path d="M8 5v14l11-7z" />
+						</svg>
+						Run
+					</button>
+				</div>
+				<div class="cell-code">
+					<pre><code class="language-python"><span class="comment"># Image quality metrics visualization</span>
+fig, axes = plt.subplots(<span class="number">1</span>, <span class="number">3</span>, figsize=(<span class="number">15</span>, <span class="number">5</span>))
+
+metrics_names = [<span class="string">'diversity'</span>, <span class="string">'sharpness'</span>, <span class="string">'contrast'</span>]
+titles = [<span class="string">'Pixel Diversity'</span>, <span class="string">'Image Sharpness'</span>, <span class="string">'Image Contrast'</span>]
+
+<span class="keyword">for</span> idx, (metric_name, title) <span class="keyword">in</span> <span class="builtin">enumerate</span>(<span class="builtin">zip</span>(metrics_names, titles)):
+    ax = axes[idx]
+    
+    <span class="keyword">for</span> digit <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">10</span>):
+        values = [q[metric_name] <span class="keyword">for</span> q <span class="keyword">in</span> metrics_history[digit][<span class="string">'quality'</span>]]
+        ax.plot(values, label=<span class="format">f'Digit {digit}'</span>, alpha=<span class="number">0.7</span>, linewidth=<span class="number">1.5</span>)
+    
+    ax.set_title(title, fontsize=<span class="number">14</span>, fontweight=<span class="string">'bold'</span>)
+    ax.set_xlabel(<span class="string">'Epoch'</span>)
+    ax.set_ylabel(title)
+    ax.legend(loc=<span class="string">'best'</span>, ncol=<span class="number">2</span>, fontsize=<span class="number">8</span>)
+    ax.grid(<span class="keyword">True</span>, alpha=<span class="number">0.3</span>)
+
+plt.suptitle(<span class="string">'Image Quality Metrics Across Training'</span>, fontsize=<span class="number">16</span>, fontweight=<span class="string">'bold'</span>)
+plt.tight_layout()
+plt.show()</code></pre>
+				</div>
+				<div class="cell-output hidden">
+					<div class="output-label">Output:</div>
+					<div class="output-content">
+						<div id="qualityChartsContainer" class="quality-charts-grid"></div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Cell 16: Training Summary -->
+			<div class="notebook-cell" data-cell="16" data-step="16">
+				<div class="cell-header">
+					<span class="cell-label">Cell 16: Display Final Training Summary</span>
+					<button class="run-btn">
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+							<path d="M8 5v14l11-7z" />
+						</svg>
+						Run
+					</button>
+				</div>
+				<div class="cell-code">
+					<pre><code class="language-python"><span class="comment"># Final quality summary</span>
+<span class="builtin">print</span>(<span class="string">"\n"</span> + <span class="string">"="</span>*<span class="number">70</span>)
+<span class="builtin">print</span>(<span class="string">"FINAL TRAINING SUMMARY"</span>)
+<span class="builtin">print</span>(<span class="string">"="</span>*<span class="number">70</span>)
+
+<span class="keyword">for</span> digit <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">10</span>):
+    final_g_loss = metrics_history[digit][<span class="string">'g_loss'</span>][<span class="number">-1</span>]
+    final_d_loss = metrics_history[digit][<span class="string">'d_loss'</span>][<span class="number">-1</span>]
+    final_quality = metrics_history[digit][<span class="string">'quality'</span>][<span class="number">-1</span>]
+    
+    <span class="keyword">if</span> final_g_loss < <span class="number">2.5</span>:
+        status = <span class="string">"Excellent"</span>
+    <span class="keyword">elif</span> final_g_loss < <span class="number">4.5</span>:
+        status = <span class="string">"Good"</span>
+    <span class="keyword">else</span>:
+        status = <span class="string">"Needs improvement"</span>
+    
+    <span class="builtin">print</span>(<span class="format">f"Digit {digit}: G Loss: {final_g_loss:.3f} | D Loss: {final_d_loss:.3f} | {status}"</span>)
+    <span class="builtin">print</span>(<span class="format">f"  Quality - Diversity: {final_quality['diversity']:.4f} | "</span>
+          <span class="format">f"Sharpness: {final_quality['sharpness']:.4f} | "</span>
+          <span class="format">f"Contrast: {final_quality['contrast']:.4f}"</span>)
+
+<span class="builtin">print</span>(<span class="string">"="</span>*<span class="number">70</span>)</code></pre>
+				</div>
+				<div class="cell-output hidden">
+					<div class="output-label">Output:</div>
+					<div class="output-content">
+						<div class="text-output">
+							<pre id="trainingSummary">Generating summary...</pre>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Cell 17: Interactive Generation -->
+			<div class="notebook-cell" data-cell="17" data-step="17">
+				<div class="cell-header">
+					<span class="cell-label">Cell 17: Interactive Digit Generation</span>
+					<button class="run-btn">
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+							<path d="M8 5v14l11-7z" />
+						</svg>
+						Run
+					</button>
+				</div>
+				<div class="cell-code">
+					<pre><code class="language-python"><span class="comment"># Interactive generation function</span>
+<span class="keyword">def</span> <span class="function">generate_digit</span>(digit, num_samples=<span class="number">5</span>):
+    <span class="string">"""
+    Generate images for a specific digit using the trained generator.
+    
+    Args:
+        digit (int): Digit to generate (0-9)
+        num_samples (int): Number of samples to generate
+    """</span>
+    <span class="keyword">if</span> digit < <span class="number">0</span> <span class="keyword">or</span> digit > <span class="number">9</span>:
+        <span class="builtin">print</span>(<span class="string">"Error: Please enter a digit between 0 and 9"</span>)
+        <span class="keyword">return</span>
+    
+    <span class="builtin">print</span>(<span class="format">f"Generating {num_samples} images for digit {digit}..."</span>)
+    
+    <span class="comment"># Load trained generator for this digit</span>
+    generator = Generator().to(device)
+    generator.load_state_dict(trained_generators[digit])
+    generator.eval()
+    
+    <span class="keyword">with</span> torch.no_grad():
+        noise = torch.randn(num_samples, latent_dim, <span class="number">1</span>, <span class="number">1</span>, device=device)
+        generated_images = generator(noise)
+    
+    <span class="comment"># Display</span>
+    grid = make_grid(generated_images, nrow=num_samples, normalize=<span class="keyword">True</span>)
+    
+    plt.figure(figsize=(num_samples * <span class="number">2</span>, <span class="number">2</span>))
+    plt.imshow(grid.cpu().permute(<span class="number">1</span>, <span class="number">2</span>, <span class="number">0</span>))
+    plt.title(<span class="format">f"Generated Images for Digit: {digit}"</span>, fontsize=<span class="number">14</span>, fontweight=<span class="string">'bold'</span>)
+    plt.axis(<span class="string">"off"</span>)
+    plt.tight_layout()
+    plt.show()
+    
+    <span class="comment"># Quality metrics</span>
+    quality = calculate_image_quality(generated_images)
+    <span class="builtin">print</span>(<span class="format">f"\nQuality Metrics:"</span>)
+    <span class="builtin">print</span>(<span class="format">f"  Diversity: {quality['diversity']:.4f}"</span>)
+    <span class="builtin">print</span>(<span class="format">f"  Sharpness: {quality['sharpness']:.4f}"</span>)
+    <span class="builtin">print</span>(<span class="format">f"  Contrast: {quality['contrast']:.4f}"</span>)
+
+<span class="builtin">print</span>(<span class="string">"\n"</span> + <span class="string">"="</span>*<span class="number">70</span>)
+<span class="builtin">print</span>(<span class="string">"INTERACTIVE GENERATION READY"</span>)
+<span class="builtin">print</span>(<span class="string">"="</span>*<span class="number">70</span>)
+<span class="builtin">print</span>(<span class="string">"Usage: generate_digit(digit, num_samples=5)"</span>)
+<span class="builtin">print</span>(<span class="string">"Example: generate_digit(3, 8)  # Generate 8 images of digit 3"</span>)
+<span class="builtin">print</span>(<span class="string">"="</span>*<span class="number">70</span>)</code></pre>
+				</div>
+				<div class="cell-output hidden">
+					<div class="output-label">Output:</div>
+					<div class="output-content">
+						<div class="text-output">
+							<pre>
+======================================================================
+INTERACTIVE GENERATION READY
+======================================================================
+Usage: generate_digit(digit, num_samples=5)
+Example: generate_digit(3, 8)  # Generate 8 images of digit 3
+======================================================================</pre>
+						</div>
+						<div class="interactive-generation">
+							<h3>Try it yourself:</h3>
+							<div class="generation-controls">
+								<label>Select Digit:</label>
+								<select id="digitSelect">
+									<option value="0">Digit 0</option>
+									<option value="1">Digit 1</option>
+									<option value="2">Digit 2</option>
+									<option value="3">Digit 3</option>
+									<option value="4">Digit 4</option>
+									<option value="5">Digit 5</option>
+									<option value="6">Digit 6</option>
+									<option value="7">Digit 7</option>
+									<option value="8">Digit 8</option>
+									<option value="9">Digit 9</option>
+								</select>
+								<button id="generateBtn" class="generate-btn">Generate (5 samples)</button>
+							</div>
+							<div id="generatedOutput" class="generated-output"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Experiment Completion Banner -->
+			<div class="completion-message hidden" id="completionBanner">
+				<div class="completion-icon">🎉</div>
+				<div class="completion-text">
+					<h3>Experiment Completed!</h3>
+					<p>You have successfully trained DCGANs for all digits (0-9). Now explore the Interactive Playground
+						to visualize adversarial training, mode collapse, epoch evolution, and latent space exploration!
+					</p>
+				</div>
+			</div>
+
+		</main>
+	</div>
+
+	<!-- Scripts -->
+	<script src="./js/data.js"></script>
+	<script src="./js/main.js"></script>
+</body>
+
+</html>

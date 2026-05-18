@@ -1,0 +1,175 @@
+{
+  "version": 2.0,
+  "questions": [
+    {
+      "question": "1. What is the primary application of Deep Convolutional GAN (DCGAN)?",
+      "answers": {
+        "a": "Image-to-image translation",
+        "b": "Style transfer",
+        "c": "High-resolution image generation",
+        "d": "Anomaly detection"
+      },
+      "explanations": {
+        "a": "Incorrect because image-to-image translation is typically handled by models like Pix2Pix or CycleGAN.",
+        "b": "Incorrect because style transfer usually relies on CNN-based optimization or specialized GAN variants.",
+        "c": "Correct because DCGANs are designed to generate realistic images using convolutional layers, making them effective for image generation tasks.",
+        "d": "Incorrect because anomaly detection uses GAN variants such as AnoGAN."
+      },
+      "correctAnswer": "c",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "2. Why is adversarial training used in GANs?",
+      "answers": {
+        "a": "To train both networks independently",
+        "b": "To create competition between Generator and Discriminator",
+        "c": "To speed up the training process",
+        "d": "To eliminate the need for labelled data"
+      },
+      "explanations": {
+        "a": "Incorrect because GANs rely on dependent, not independent, training.",
+        "b": "Correct because this competition drives both networks to improve, resulting in more realistic generated samples.",
+        "c": "Incorrect because adversarial training often makes training more unstable, not faster.",
+        "d": "Incorrect because while GANs are unsupervised, this is not the main reason for adversarial training."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "3. What is the purpose of noise input in the generator component of a GAN?",
+      "answers": {
+        "a": "To randomize the generation process and introduce variations",
+        "b": "To control the learning rate during training",
+        "c": "To adjust the weights and biases of the generator",
+        "d": "None of the above"
+      },
+      "explanations": {
+        "a": "Correct because noise allows the generator to produce diverse outputs.",
+        "b": "Incorrect because learning rate is a hyper-parameter, not controlled by input noise.",
+        "c": "Incorrect because weights are updated via backpropagation, not noise.",
+        "d": "Incorrect because noise plays a crucial role in sample diversity."
+      },
+      "correctAnswer": "a",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "4. What does the discriminator output contribute to during GAN training?",
+      "answers": {
+        "a": "Provide feedback to the generator and help it improve",
+        "b": "Generate synthetic samples",
+        "c": "Adjust the learning rate during training",
+        "d": "None of the above"
+      },
+      "explanations": {
+        "a": "Correct because it evaluates real vs. generated samples and its feedback guides the generator's learning.",
+        "b": "Incorrect because sample generation is performed by the generator, not the discriminator.",
+        "c": "Incorrect because learning rate is controlled by optimization algorithms, not the discriminator.",
+        "d": "Incorrect because the discriminator plays a critical evaluative role during GAN training."
+      },
+      "correctAnswer": "a",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "5. What does the term \"adversarial\" in GANs refer to?",
+      "answers": {
+        "a": "The competitive process between two sub-models",
+        "b": "The generation of new data",
+        "c": "The architecture of the generator",
+        "d": "The classification of real data"
+      },
+      "explanations": {
+        "a": "Correct because the generator and discriminator compete against each other.",
+        "b": "Incorrect because generation alone is not adversarial.",
+        "c": "Incorrect because adversarial refers to training dynamics, not architecture.",
+        "d": "Incorrect because classification is only one part of the process."
+      },
+      "correctAnswer": "a",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "6. What type of neural network layers are commonly used in DCGAN?",
+      "answers": {
+        "a": "Recurrent layers",
+        "b": "Fully connected layers",
+        "c": "Convolutional layers",
+        "d": "Max-pooling layers"
+      },
+      "explanations": {
+        "a": "Incorrect because DCGAN works on images, not sequences.",
+        "b": "Incorrect because DCGAN minimizes dense layers.",
+        "c": "Correct because DCGAN relies on convolution and transposed convolution layers.",
+        "d": "Incorrect because DCGAN uses strided convolutions instead."
+      },
+      "correctAnswer": "c",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "7. Which optimizer was used in the original DCGAN paper?",
+      "answers": {
+        "a": "Gradient Descent",
+        "b": "Adam",
+        "c": "RMSprop",
+        "d": "AdaGrad"
+      },
+      "explanations": {
+        "a": "Incorrect because it converges slowly.",
+        "b": "Correct because it provides adaptive learning rates and stable convergence.",
+        "c": "Incorrect because it is less commonly used now.",
+        "d": "Incorrect because it decays learning rate too aggressively."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "8. Why are convolutional layers used in DCGAN instead of fully connected layers?",
+      "answers": {
+        "a": "They require fewer parameters and capture spatial features",
+        "b": "They guarantee perfect image generation",
+        "c": "They eliminate the need for a discriminator",
+        "d": "They work only for grayscale images"
+      },
+      "explanations": {
+        "a": "Correct because convolutional layers efficiently learn spatial patterns in images while using fewer parameters than fully connected layers.",
+        "b": "Incorrect because no architecture guarantees perfect generation.",
+        "c": "Incorrect because the discriminator is essential in GAN training.",
+        "d": "Incorrect because convolutional layers work for both grayscale and colour images."
+      },
+      "correctAnswer": "a",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "9. What does the \"Real vs Generated\" panel help in understanding?",
+      "answers": {
+        "a": "Numerical accuracy of the model",
+        "b": "Training speed of the optimizer",
+        "c": "Visual quality and realism of generated images",
+        "d": "Memory usage of the GPU"
+      },
+      "explanations": {
+        "a": "Incorrect because GANs do not use accuracy as a primary metric.",
+        "b": "Incorrect because training speed is unrelated to image comparison.",
+        "c": "Correct because it allows direct visual comparison to judge how realistic and similar the generated images are to real data.",
+        "d": "Incorrect because GPU memory usage is not reflected in image panels."
+      },
+      "correctAnswer": "c",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "10. What is the format and nature of images in the MNIST dataset used for GAN training?",
+      "answers": {
+        "a": "RGB images of size 224×224",
+        "b": "Grayscale images of handwritten digits",
+        "c": "Colour images with multiple objects",
+        "d": "Text-based image representations"
+      },
+      "explanations": {
+        "a": "Incorrect because MNIST images are not RGB and are much smaller than 224×224.",
+        "b": "Correct because it consists of grayscale images representing handwritten digits (0–9).",
+        "c": "Incorrect because it contains single handwritten digits, not complex scenes.",
+        "d": "Incorrect because it consists of image pixels, not textual encodings."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    }
+  ]
+}

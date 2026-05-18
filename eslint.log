@@ -1,0 +1,30 @@
+
+/home/runner/work/exp-gans-dei/exp-gans-dei/experiment/simulation/interactive/js/sim1-adversarial.js
+  306:25  warning  'Chart' is not defined  no-undef
+
+/home/runner/work/exp-gans-dei/exp-gans-dei/experiment/simulation/interactive/js/sim2-epoch-evolution.js
+  94:37  warning  'Chart' is not defined  no-undef
+
+/home/runner/work/exp-gans-dei/exp-gans-dei/experiment/simulation/interactive/js/sim3-mode-collapse.js
+   68:9   warning  'useWGAN' is assigned a value but never used  no-unused-vars
+  227:19  warning  'pFake' is assigned a value but never used    no-unused-vars
+
+/home/runner/work/exp-gans-dei/exp-gans-dei/experiment/simulation/interactive/js/sim4-latent-explorer.js
+  11:11  warning  'IMG_SIZE' is assigned a value but never used  no-unused-vars
+
+/home/runner/work/exp-gans-dei/exp-gans-dei/experiment/simulation/js/data.js
+  5:7  warning  'EXPERIMENT_DATA' is assigned a value but never used  no-unused-vars
+
+/home/runner/work/exp-gans-dei/exp-gans-dei/experiment/simulation/js/main.js
+  201:15  warning  'EXPERIMENT_DATA' is not defined  no-undef
+  326:15  warning  'EXPERIMENT_DATA' is not defined  no-undef
+
+/home/runner/work/exp-gans-dei/exp-gans-dei/experiment/simulation/notebook/js/data.js
+  5:7  warning  'EXPERIMENT_DATA' is assigned a value but never used  no-unused-vars
+
+/home/runner/work/exp-gans-dei/exp-gans-dei/experiment/simulation/notebook/js/main.js
+  232:15  warning  'EXPERIMENT_DATA' is not defined  no-undef
+  357:15  warning  'EXPERIMENT_DATA' is not defined  no-undef
+
+✖ 11 problems (0 errors, 11 warnings)
+
