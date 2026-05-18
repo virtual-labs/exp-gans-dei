@@ -12,12 +12,12 @@ Generative Adversarial Networks (GANs), proposed by Goodfellow et al. in 2014, a
 
 #### GAN Architecture
 
-A GAN consists of two neural networks trained simultaneously in a competitive framework as shown in Fig. 1:
+A GAN consists of two neural networks trained simultaneously in a competitive framework, as shown in Fig. 1:
 
 - **The Generator Network** takes random noise vectors from a latent space as input and transforms them into synthetic images.
 - **The Discriminator Network** receives both real images from the training dataset and fake images produced by the generator, and its task is to classify each input as real or generated.
 
-The training process of a GAN can be intuitively understood as a competition between a counterfeit artist and an expert evaluator. Initially, the generator produces poor-quality images, which the discriminator easily identifies as fake. Through continuous feedback from the discriminator, the generator gradually improves its ability to create more realistic images. At the same time, the discriminator becomes more skilled at detecting subtle differences between real and generated samples. Over successive training iterations, both networks improve, eventually reaching a point where the discriminator finds it difficult to distinguish between real and synthetic images.
+The training process of a GAN can be intuitively understood as a competition between a counterfeit artist and an expert evaluator. Initially, the generator produces low-quality images that the discriminator easily identifies as fake. Through continuous feedback from the discriminator, the generator gradually improves its ability to create more realistic images. At the same time, the discriminator becomes more skilled at detecting subtle differences between real and generated samples. Over successive training iterations, both networks improve, eventually reaching a point where the discriminator finds it difficult to distinguish between real and synthetic images.
 
 ---
 
@@ -42,7 +42,7 @@ where:
 - $x$ : A real data sample drawn from the training dataset
 - $p_{\text{data}}(x)$ : True data distribution
 - $z$ : Random noise vector sampled from a prior distribution
-- $p_z(z)$ : Prior noise distribution (uniform or Gaussian)
+- $p_z(z)$ : Prior noise distribution (usually Gaussian or uniform)
 - $G(z;\, \theta_g)$ : Generator network that maps noise $z$ to a synthetic data sample
 - $\theta_g$ : Parameters (weights) of the Generator
 - $D(x;\, \theta_d)$ : Discriminator network that outputs the probability that $x$ is real
@@ -58,7 +58,7 @@ where:
 - The **Discriminator** tries to **maximise** $V(D, G)$ by improving its ability to distinguish real from fake data.
 - The **Generator** tries to **minimise** $V(D, G)$ by generating samples that the discriminator classifies as real.
 
-Unlike traditional deep learning models that optimise a fixed loss function, GAN training involves a dynamic optimisation process. Each update to the generator affects the discriminator's learning objective and vice versa. Instead of converging to a single minimum, the training seeks an equilibrium between the two competing networks — this is formally a **Nash equilibrium** of the two-player minimax game. This adversarial nature makes GANs powerful but also challenging to train, often requiring careful selection of network architectures, hyperparameters, and training strategies.
+Unlike traditional deep learning models that optimize a fixed loss function, GAN training involves a dynamic optimization process. Each update to the generator affects the discriminator's learning objective and vice versa. Instead of converging to a single minimum, the training seeks an equilibrium between the two competing networks – this is formally a **Nash equilibrium** of the two-player minimax game. This adversarial nature makes GANs powerful but also challenging to train, often requiring careful selection of network architectures, hyperparameters, and training strategies.
 
 Once training is complete, the generator $G$ can map any point $z$ from the latent space to a realistic output image. However, unlike VAEs, GANs do not explicitly enforce continuity or structure in the latent space, which can make interpolation and control more complex.
 
@@ -70,7 +70,7 @@ Once training is complete, the generator $G$ can map any point $z$ from the late
   GANs are capable of generating high-resolution and highly realistic images, videos, and other types of data. The quality of the generated data is often superior to that produced by other generative models.
 
 - **Unsupervised Learning:**
-  GANs can learn to generate data without requiring labelled training data. This is particularly useful in situations where labelled data is scarce or expensive to obtain.
+  GANs can learn to generate data without requiring labeled training data. This is particularly useful in situations where labeled data is scarce or expensive to obtain.
 
 - **Data Augmentation:**
   GANs can generate synthetic data to augment existing datasets, which can be beneficial for training machine learning models, especially in scenarios where real data is limited.
@@ -83,7 +83,7 @@ Once training is complete, the generator $G$ can map any point $z$ from the late
   Training GANs is notoriously difficult and unstable. The process often suffers from issues such as vanishing gradients and imbalance between the generator and discriminator, which can hinder effective learning.
 
 - **Mode Collapse:**
-  Mode collapse is a common problem in GANs where the generator produces a narrow range of outputs, failing to capture the diversity of the data distribution. This can lead to poor generalisation and limited applicability.
+  Mode collapse is a common problem in GANs where the generator produces a narrow range of outputs, failing to capture the diversity of the data distribution. This can lead to poor generalization and limited applicability.
 
 - **Computational Complexity:**
   GANs typically require significant computational resources and long training times due to the simultaneous training of both the generator and discriminator networks. Achieving stable convergence often requires careful tuning of architectures and hyperparameters.

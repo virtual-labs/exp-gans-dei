@@ -45,7 +45,7 @@
       },
       "explanations": {
         "a": "Correct because noise allows the generator to produce diverse outputs.",
-        "b": "Incorrect because learning rate is a hyperparameter, not controlled by input noise.",
+        "b": "Incorrect because learning rate is a hyper-parameter, not controlled by input noise.",
         "c": "Incorrect because weights are updated via backpropagation, not noise.",
         "d": "Incorrect because noise plays a crucial role in sample diversity."
       },

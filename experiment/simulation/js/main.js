@@ -74,7 +74,7 @@ function activateFirstStep() {
 function downloadExperiment() {
 	// Download the experiment PDF
 	const link = document.createElement('a');
-	link.href = './assets/Exp_9_Generative_Adversarial_Networks.pdf';
+	link.href = './assets/Exp9_Generative_Adversarial_Networks.pdf';
 	link.download = 'GAN_Experiment.pdf';
 	document.body.appendChild(link);
 	link.click();
