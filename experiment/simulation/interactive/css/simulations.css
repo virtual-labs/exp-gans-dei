@@ -1,0 +1,717 @@
+/* ===================================
+   GAN Interactive Playground — CSS
+   =================================== */
+
+:root {
+    --bg: #fafafa;
+    --surface: #ffffff;
+    --border: #e5e7eb;
+    --text: #1a1a2e;
+    --text-muted: #6b7280;
+    --accent: #6366f1;
+    --accent-light: #818cf8;
+    --accent-bg: #eef2ff;
+    --danger: #ef4444;
+    --success: #22c55e;
+    --warning: #f59e0b;
+    --gen-color: #ef4444;
+    --real-color: #3b82f6;
+    --radius: 8px;
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --mono: 'Fira Code', 'Consolas', monospace;
+    --nav-h: 48px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+}
+
+/* ─── Tab Navigation ─── */
+.tab-navigation {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 1.5rem;
+    height: var(--nav-h);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.tab-navigation .logo {
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-right: 1.5rem;
+    white-space: nowrap;
+}
+
+.tab-navigation .logo span {
+    color: var(--accent);
+}
+
+.tab-btn {
+    background: none;
+    border: none;
+    padding: 0 1rem;
+    height: var(--nav-h);
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+    white-space: nowrap;
+    font-family: var(--font);
+}
+
+.tab-btn:hover {
+    color: var(--text);
+}
+
+.tab-btn.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+}
+
+/* ─── Back to Notebook Button ─── */
+.btn-back {
+    margin-left: auto;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 1rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--accent);
+    background: var(--accent-bg);
+    border: 1px solid var(--accent);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    height: auto;
+    font-family: var(--font);
+}
+
+.btn-back:hover {
+    background: var(--accent);
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+}
+
+/* ─── Main Content ─── */
+.main-content {
+    height: calc(100vh - var(--nav-h));
+    overflow: hidden;
+}
+
+.tab-content {
+    display: none;
+    padding: 0.75rem 1rem;
+    height: 100%;
+    overflow: hidden;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* ─── Glass Panel ─── */
+.glass-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+/* ─── Simulation Layout — Fit viewport ─── */
+.sim-layout {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 0.75rem;
+    height: 100%;
+    overflow: hidden;
+}
+
+.sim-sidebar {
+    padding: 1rem;
+    overflow-y: auto;
+    height: 100%;
+}
+
+.sim-sidebar h2 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.35rem;
+}
+
+.sim-sidebar h3 {
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin: 0.6rem 0 0.3rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.sim-sidebar p {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+}
+
+.sim-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* ─── Control Groups (compact) ─── */
+.control-group {
+    margin-bottom: 0.5rem;
+}
+
+.control-group label {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-bottom: 0.15rem;
+}
+
+.control-group input[type="range"] {
+    width: 100%;
+    accent-color: var(--accent);
+    height: 4px;
+}
+
+.control-group select {
+    width: 100%;
+    padding: 0.3rem 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-size: 0.78rem;
+    font-family: var(--font);
+    background: var(--surface);
+    color: var(--text);
+}
+
+.control-row {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 0.25rem;
+}
+
+.control-row .value {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--accent);
+    min-width: 2.5rem;
+    text-align: right;
+    font-family: var(--mono);
+}
+
+/* ─── Buttons ─── */
+.btn {
+    padding: 0.35rem 0.85rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: var(--font);
+    transition: all 0.15s;
+    background: var(--surface);
+    color: var(--text);
+}
+
+.btn:hover {
+    border-color: var(--text);
+}
+
+.btn-primary {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+}
+
+.btn-primary:hover {
+    background: var(--accent-light);
+    border-color: var(--accent-light);
+}
+
+.btn-danger {
+    background: #fff;
+    color: var(--danger);
+    border-color: var(--danger);
+}
+
+.btn-danger:hover {
+    background: #fef2f2;
+}
+
+.btn-group {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+}
+
+/* ─── Canvas Container — crisp rendering ─── */
+.canvas-container {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    position: relative;
+    flex: 1;
+    min-height: 0;
+}
+
+.canvas-container canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* ─── Sim1: Side-by-side canvas + chart ─── */
+.sim1-workspace {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    flex: 1;
+    min-height: 0;
+}
+
+.sim1-workspace .canvas-container {
+    flex: none;
+}
+
+.sim1-workspace .chart-side {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-height: 0;
+}
+
+.sim1-workspace .chart-side .chart-box {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.sim1-workspace .chart-side .chart-box .chart-wrap {
+    flex: 1;
+    min-height: 0;
+    position: relative;
+}
+
+.sim1-workspace .chart-side .chart-box .chart-wrap canvas {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.sim1-workspace .observe-box {
+    flex: 0 0 auto;
+}
+
+/* ─── Charts Area ─── */
+.chart-box {
+    padding: 0.75rem;
+}
+
+.chart-box h4 {
+    font-size: 0.78rem;
+    font-weight: 600;
+    margin-bottom: 0.35rem;
+}
+
+/* ─── Split Screen (Sim 2) ─── */
+.split-screen {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    flex: 1;
+    min-height: 0;
+}
+
+.split-panel {
+    padding: 0.75rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+}
+
+.split-panel h4 {
+    font-size: 0.78rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.split-panel img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 4px;
+    image-rendering: pixelated;
+}
+
+/* ─── Gauges ─── */
+.gauges-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    flex: 0 0 auto;
+}
+
+.gauge-box {
+    padding: 0.6rem;
+    text-align: center;
+}
+
+.gauge-box h5 {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+}
+
+.gauge-box canvas {
+    max-width: 80px;
+    margin: 0 auto;
+}
+
+.gauge-value {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-top: 0.15rem;
+}
+
+/* ─── Mode Collapse (Sim 3) — side-by-side canvas + diversity ─── */
+.sim3-workspace {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 0.5rem;
+    flex: 1;
+    min-height: 0;
+}
+
+.sim3-workspace .canvas-container {
+    flex: none;
+}
+
+.sim3-right {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.diversity-panel {
+    padding: 0.75rem;
+}
+
+.diversity-bar {
+    height: 16px;
+    background: #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 0.35rem 0;
+}
+
+.diversity-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--danger), var(--success));
+    border-radius: 8px;
+    transition: width 0.3s ease;
+}
+
+.mode-counter {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 0.35rem;
+}
+
+.mode-stat {
+    text-align: center;
+}
+
+.mode-stat .num {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--accent);
+}
+
+.mode-stat .label {
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+/* ─── Latent Sliders (Sim 4) ─── */
+.latent-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.latent-slider-group {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    min-width: 0;
+}
+
+.latent-slider-group label {
+    flex: 0 0 1.6rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    font-family: var(--mono);
+}
+
+.latent-slider-group input[type="range"] {
+    flex: 1;
+    min-width: 0;
+}
+
+.latent-slider-group .val {
+    flex: 0 0 2.5rem;
+    text-align: right;
+    font-size: 0.68rem;
+    font-family: var(--mono);
+    color: var(--accent);
+}
+
+/* Sim4 side-by-side */
+.sim4-workspace {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    flex: 1;
+    min-height: 0;
+}
+
+.generated-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    min-height: 0;
+}
+
+.generated-display img,
+.generated-display canvas {
+    image-rendering: pixelated;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    max-width: 280px;
+    max-height: 280px;
+}
+
+/* ─── Interpolation Display ─── */
+.interpolation-strip {
+    display: flex;
+    gap: 0.35rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 0.75rem;
+}
+
+.interpolation-strip canvas {
+    image-rendering: pixelated;
+    border-radius: 2px;
+    border: 1px solid var(--border);
+}
+
+/* ─── Toggle Switch ─── */
+.toggle-switch {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 0.35rem;
+}
+
+.toggle-switch input[type="checkbox"] {
+    appearance: none;
+    width: 32px;
+    height: 18px;
+    background: #d1d5db;
+    border-radius: 9px;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.2s;
+    flex-shrink: 0;
+}
+
+.toggle-switch input[type="checkbox"]::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 14px;
+    height: 14px;
+    background: white;
+    border-radius: 50%;
+    transition: transform 0.2s;
+}
+
+.toggle-switch input[type="checkbox"]:checked {
+    background: var(--accent);
+}
+
+.toggle-switch input[type="checkbox"]:checked::after {
+    transform: translateX(14px);
+}
+
+.toggle-label {
+    font-size: 0.78rem;
+    font-weight: 500;
+}
+
+/* ─── Status Bar ─── */
+.status-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.35rem 0.75rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    flex: 0 0 auto;
+}
+
+.status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #d1d5db;
+}
+
+.status-dot.running {
+    background: var(--success);
+    animation: pulse 1s infinite;
+}
+
+.status-dot.paused {
+    background: var(--warning);
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.4;
+    }
+}
+
+/* ─── Observe box (compact) ─── */
+.observe-box {
+    padding: 0.6rem 0.75rem;
+}
+
+.observe-box h4 {
+    font-size: 0.75rem;
+    margin-bottom: 0.25rem;
+}
+
+.observe-box ul {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    padding-left: 1rem;
+    line-height: 1.6;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 1200px) {
+    .sim1-workspace {
+        grid-template-columns: 1fr;
+    }
+
+    .sim3-workspace {
+        grid-template-columns: 1fr;
+    }
+
+    .sim4-workspace {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 900px) {
+    .sim-layout {
+        grid-template-columns: 1fr;
+        height: auto;
+        overflow: auto;
+    }
+
+    .sim-sidebar {
+        height: auto;
+    }
+
+    .main-content {
+        height: auto;
+        overflow: auto;
+    }
+
+    .tab-content {
+        height: auto;
+        overflow: auto;
+    }
+
+    .split-screen {
+        grid-template-columns: 1fr;
+    }
+
+    .gauges-row {
+        grid-template-columns: 1fr;
+    }
+
+    .tab-navigation {
+        overflow-x: auto;
+    }
+}
+
+@media (max-width: 600px) {
+    .tab-content {
+        padding: 0.5rem;
+    }
+
+    .tab-btn {
+        font-size: 0.72rem;
+        padding: 0 0.5rem;
+    }
+}

@@ -1,1 +1,2 @@
-## Experiment name
+## Generative Adversarial Networks (GANs)
+
